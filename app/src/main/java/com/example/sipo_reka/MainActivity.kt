@@ -9,39 +9,49 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.example.sipo_reka.ui.screen.SplashScreen
 import com.example.sipo_reka.ui.theme.SIPO_RekaTheme
+import androidx.compose.runtime.*
+import com.example.sipo_reka.ui.superadmin.DashboardScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_SIPO_Reka)
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             SIPO_RekaTheme {
-                Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                AppNavigator() // Menjalankan navigasi Splash Screen
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun AppNavigator() {
+    var showSplash by remember { mutableStateOf(true) }
+
+    if (showSplash) {
+        SplashScreen {
+            showSplash = false // Setelah Splash, lanjut ke layar utama
+        }
+    } else {
+        DashboardScreen() // Ganti dengan composable utama setelah splash
+    }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    SIPO_RekaTheme {
-        Greeting("Android")
+fun MainScreen() {
+    Scaffold(
+        modifier = Modifier.fillMaxSize()
+    ) { innerPadding ->
+        Text(
+            text = "Ini adalah layar utama setelah Splash Screen",
+            modifier = Modifier.padding(innerPadding)
+        )
     }
 }
