@@ -18,14 +18,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            SIPO_RekaTheme {
-                Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+//            SIPO_RekaTheme {
+//                Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
+//                    Greeting(
+//                        name = "Zahra Comel",
+//                        modifier = Modifier.padding(innerPadding)
+//                    )
+//                }
+//            }
+            Navigation()
+            LoginScreen()
+            MemoSuperadmin()
         }
     }
 }
@@ -33,7 +36,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
+        text = "Hai $name!",
         modifier = modifier
     )
 }
@@ -45,3 +48,4 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
+
