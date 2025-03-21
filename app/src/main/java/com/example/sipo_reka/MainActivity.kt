@@ -16,7 +16,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.sipo_reka.ui.screen.SplashScreen
 import com.example.sipo_reka.ui.theme.SIPO_RekaTheme
 import androidx.compose.runtime.*
-import com.example.sipo_reka.ui.superadmin.DashboardScreen
+import com.example.sipo_reka.ui.screen.LoginScreen
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.sipo_reka.ui.screen.ForgotPassword
+import androidx.navigation.NavHostController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,25 +32,47 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SIPO_RekaTheme {
-                AppNavigator() // Menjalankan navigasi Splash Screen
-                Navigation()
-                LoginScreen()
-                MemoSuperadmin()
+                val navController = rememberNavController() // Buat NavController
+                AppNavigator(navController)
+//                Navigation()
+//                LoginScreen()
+//                MemoSuperadmin()
             }
         }
     }
 }
 
-@Composable
-fun AppNavigator() {
-    var showSplash by remember { mutableStateOf(true) }
+//@Composable
+//fun AppNavigator() {
+//    var showSplash by remember { mutableStateOf(true) }
+//
+//    if (showSplash) {
+//        SplashScreen {
+//            showSplash = false // Setelah Splash, lanjut ke layar utama
+//        }
+//    } else {
+//        LoginScreen()
+////        DashboardScreen() // Ganti dengan composable utama setelah splash
+//    }
+//}
 
-    if (showSplash) {
-        SplashScreen {
-            showSplash = false // Setelah Splash, lanjut ke layar utama
+@Composable
+fun AppNavigator(navController: NavHostController) {
+    NavHost(
+        navController = navController,
+        startDestination = "splash"
+    ) {
+        composable("splash") {
+            SplashScreen {
+                navController.navigate("login")
+            }
         }
-    } else {
-        DashboardScreen() // Ganti dengan composable utama setelah splash
+        composable("login") {
+            LoginScreen(navController)
+        }
+        composable("forgotPassword") {
+            ForgotPassword()
+        }
     }
 }
 

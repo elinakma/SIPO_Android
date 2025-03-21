@@ -1,4 +1,4 @@
-package com.example.sipo_reka
+package com.example.sipo_reka.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,7 +28,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -51,9 +50,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.runtime.*
+import com.example.sipo_reka.R
+import androidx.navigation.NavController
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.sipo_reka.ui.screen.ForgotPassword
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -211,7 +215,9 @@ fun LoginScreen() {
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
-                                .clickable { }
+                                .clickable {
+                                    navController.navigate("forgotPassword")
+                                }
                                 .padding(end = 25.dp)
                         )
                     }
