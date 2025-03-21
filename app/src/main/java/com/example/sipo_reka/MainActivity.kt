@@ -24,11 +24,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-<<<<<<< HEAD
             SIPO_RekaTheme {
                 AppNavigator() // Menjalankan navigasi Splash Screen
             }
-=======
 //            SIPO_RekaTheme {
 //                Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
 //                    Greeting(
@@ -38,25 +36,15 @@ class MainActivity : ComponentActivity() {
 //                }
 //            }
             Navigation()
-            LoginScreen()
+//            LoginScreen()
             MemoSuperadmin()
->>>>>>> dc9433268b9d67c478e32173cca9f91bb1fe9fbf
         }
     }
 }
 
 @Composable
-<<<<<<< HEAD
 fun AppNavigator() {
     var showSplash by remember { mutableStateOf(true) }
-=======
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hai $name!",
-        modifier = modifier
-    )
-}
->>>>>>> dc9433268b9d67c478e32173cca9f91bb1fe9fbf
 
     if (showSplash) {
         SplashScreen {
@@ -65,5 +53,13 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     } else {
         DashboardScreen() // Ganti dengan composable utama setelah splash
     }
+}
+
+@Composable
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    Text(
+        text = "Hai $name!",
+        modifier = modifier
+    )
 }
 
