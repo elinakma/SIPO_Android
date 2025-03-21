@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.sipo_reka.ui.screen.SplashScreen
 import com.example.sipo_reka.ui.theme.SIPO_RekaTheme
 import androidx.compose.runtime.*
@@ -24,39 +25,19 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-<<<<<<< HEAD
             SIPO_RekaTheme {
                 AppNavigator() // Menjalankan navigasi Splash Screen
+                Navigation()
+                LoginScreen()
+                MemoSuperadmin()
             }
-=======
-//            SIPO_RekaTheme {
-//                Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
-//                    Greeting(
-//                        name = "Zahra Comel",
-//                        modifier = Modifier.padding(innerPadding)
-//                    )
-//                }
-//            }
-            Navigation()
-            LoginScreen()
-            MemoSuperadmin()
->>>>>>> dc9433268b9d67c478e32173cca9f91bb1fe9fbf
         }
     }
 }
 
 @Composable
-<<<<<<< HEAD
 fun AppNavigator() {
     var showSplash by remember { mutableStateOf(true) }
-=======
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hai $name!",
-        modifier = modifier
-    )
-}
->>>>>>> dc9433268b9d67c478e32173cca9f91bb1fe9fbf
 
     if (showSplash) {
         SplashScreen {
@@ -67,3 +48,30 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun MainScreen() {
+    Scaffold(
+        modifier = Modifier.fillMaxSize()
+    ) { innerPadding ->
+        Text(
+            text = "Ini adalah layar utama setelah Splash Screen",
+            modifier = Modifier.padding(innerPadding)
+        )
+    }
+}
+
+@Composable
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    Text(
+        text = "Hai $name!",
+        modifier = modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    SIPO_RekaTheme {
+        Greeting("Android")
+    }
+}
