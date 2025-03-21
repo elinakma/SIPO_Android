@@ -43,15 +43,3 @@ fun AppNavigator() {
         DashboardScreen() // Ganti dengan composable utama setelah splash
     }
 }
-
-@Composable
-fun MainScreen() {
-    Scaffold(
-        modifier = Modifier.fillMaxSize()
-    ) { innerPadding ->
-        Text(
-            text = "Ini adalah layar utama setelah Splash Screen",
-            modifier = Modifier.padding(innerPadding)
-        )
-    }
-}

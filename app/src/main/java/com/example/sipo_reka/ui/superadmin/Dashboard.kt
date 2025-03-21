@@ -37,6 +37,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 
+// mengatur panjang setiap function dalam dashboard
 @Composable
 fun DashboardScreen() {
     Column(
@@ -106,7 +107,7 @@ fun DashboardHeader() {
 @Composable
 fun DashboardBanner() {
     Card(
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFFFF)),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
             .width(500.dp)
             .height(85.dp)
@@ -155,6 +156,7 @@ fun DashboardBanner() {
     }
 }
 
+// mengatur dashboard dari overview
 @Composable
 fun DashboardOverview() {
     Card(
@@ -196,6 +198,7 @@ fun DashboardOverview() {
     }
 }
 
+// mengatur overview card (isi)
 @Composable
 fun OverviewCard(title: String, count: String, icon: Int) {
     Card(
@@ -244,6 +247,7 @@ fun OverviewCard(title: String, count: String, icon: Int) {
     }
 }
 
+// mengatur menu di dashboard
 @Composable
 fun DashboardMenu() {
     Card(
@@ -264,18 +268,18 @@ fun DashboardMenu() {
                 text = "Menu",
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
-                modifier = Modifier.padding(start = 8.dp)
+                modifier = Modifier.padding(start = 8.dp, top = 20.dp)
             )
             Text(
                 text = "Gunakan menu ini untuk mengelola informasi persuratan.",
                 fontSize = 12.sp,
                 modifier = Modifier.padding(start = 8.dp),
-                lineHeight = 14.sp
+                lineHeight = 18.sp
             )
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Grid menu
+            // isi dari menu card
             val menuItems = listOf(
                 "Memo" to R.drawable.menu_memo,
                 "Risalah Rapat" to R.drawable.menu_risalah,
@@ -300,7 +304,7 @@ fun DashboardMenu() {
     }
 }
 
-
+// untuk mengatur menuItems
 @Composable
 fun MenuCard(title: String, icon: Int) {
     Column(
@@ -321,7 +325,6 @@ fun MenuCard(title: String, icon: Int) {
             maxLines = 2,
             modifier = Modifier.fillMaxWidth()
         )
-
     }
 }
 

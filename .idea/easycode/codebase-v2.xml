@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.obiscr.chatgpt.settings.EasyCodeState">
+    <option name="projectFiles" value="$PROJECT_DIR$/app/src/androidTest/java/com/example/sipo_reka/ExampleInstrumentedTest.kt;D:/KULIAH/Magang/SIPO_Android/app/src/main/java/com/example/sipo_reka/ui/screen/SplashScreen.kt;D:/KULIAH/Magang/SIPO_Android/app/src/main/java/com/example/sipo_reka/ui/superadmin/Dashboard.kt;D:/KULIAH/Magang/SIPO_Android/app/src/main/java/com/example/sipo_reka/ui/theme/Color.kt;D:/KULIAH/Magang/SIPO_Android/app/src/main/java/com/example/sipo_reka/ui/theme/Theme.kt;D:/KULIAH/Magang/SIPO_Android/app/src/main/java/com/example/sipo_reka/ui/theme/Type.kt;D:/KULIAH/Magang/SIPO_Android/app/src/main/java/com/example/sipo_reka/MainActivity.kt;D:/KULIAH/Magang/SIPO_Android/app/src/test/java/com/example/sipo_reka/ExampleUnitTest.kt;D:/KULIAH/Magang/SIPO_Android/app/build.gradle.kts;D:/KULIAH/Magang/SIPO_Android/build.gradle.kts;D:/KULIAH/Magang/SIPO_Android/settings.gradle.kts" />
+  </component>
+</project>
