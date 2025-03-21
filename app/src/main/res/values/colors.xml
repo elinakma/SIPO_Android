@@ -7,6 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+<<<<<<< HEAD
     <color name="dark_blue">#FF1E4178</color>
     <color name="light_blue">#FF92C5FF</color>
     <color name="blue">#FF0095FF</color>
@@ -19,4 +20,7 @@
     <color name="border_grey">#FFCCC9C9</color>
     <color name="crumb_grey">#FFE5E5E5</color>
     <color name="dark_grey">#FF878790</color>
+=======
+    <color name="outline_card">#CCC9C9</color>
+>>>>>>> dc9433268b9d67c478e32173cca9f91bb1fe9fbf
 </resources>
