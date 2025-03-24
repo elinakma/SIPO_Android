@@ -32,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,15 +51,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.sipo_reka.R
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-
+import com.example.sipo_reka.R
 
 @Composable
-fun ForgotPassword(navController: NavController) {
+fun VerificationPassword(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -104,7 +101,7 @@ fun ForgotPassword(navController: NavController) {
                         .padding(start = 20.dp, end = 20.dp, bottom = 10.dp, top = 0.dp)
                 ) {
                     Text(
-                        text = "Lupa Kata Sandi",
+                        text = "Verifikasi",
                         fontSize = 20.sp,
                         textAlign = TextAlign.Left,
                         color = Color(0xFF1E4178),
@@ -113,7 +110,7 @@ fun ForgotPassword(navController: NavController) {
                     )
 
                     Text(
-                        text = "Masukkan email Anda untuk proses verifikasi, kami akan mengirimkan kode 4 digit ke email Anda.",
+                        text = "Masukkan kode 4 digit yang Anda terima di email Anda.",
                         fontSize = 14.sp,
                         textAlign = TextAlign.Left,
                         color = Color(0xFFCCC9C9)
@@ -125,45 +122,67 @@ fun ForgotPassword(navController: NavController) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 15.dp)
+                        .padding(bottom = 15.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    val emailState = remember { mutableStateOf("") }
-                    val passwordState = remember { mutableStateOf("") }
-                    var passwordVisible by remember { mutableStateOf(false) }
+                    val textField1 = remember { mutableStateOf("") }
+                    val textField2 = remember { mutableStateOf("") }
+                    val textField3 = remember { mutableStateOf("") }
+                    val textField4 = remember { mutableStateOf("") }
 
-                    Text(
-                        text = "Email",
-                        fontSize = 16.sp,
-                        color = Color(0xFF1E4178),
+                    Row (
                         modifier = Modifier
-                            .padding(start = 20.dp, bottom = 5.dp),
-                    )
-
-                    TextField(
-                        value = emailState.value,
-                        onValueChange = { emailState.value = it},
-                        placeholder = { Text("Masukkan email") },
-                        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 16.sp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp, end = 20.dp, bottom = 10.dp)
-                            .height(50.dp)
-                            .border(1.dp, Color(0xFFCCC9C9), RoundedCornerShape(8.dp)),
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.White,
-                            unfocusedContainerColor = Color.White,
-                            focusedTextColor = Color.Black,
-                            unfocusedTextColor = Color.Black,
-                            focusedIndicatorColor = Color.Transparent, // Menghilangkan indicator default
-                            unfocusedIndicatorColor = Color.Transparent // Menghilangkan indicator default
-                        )
-                    )
+                            .padding(horizontal = 25.dp),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        listOf(textField1, textField2, textField3, textField4).forEach { textField ->
+                            TextField(
+                                value = textField.value,
+                                onValueChange = { textField.value = it },
+                                textStyle = androidx.compose.ui.text.TextStyle(
+                                    fontSize = 16.sp,
+                                    textAlign = TextAlign.Center
+                                ),
+                                singleLine = true,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(50.dp)
+                                    .border(1.dp, Color(0xFFCCC9C9), RoundedCornerShape(8.dp)),
+                                colors = TextFieldDefaults.colors(
+                                    focusedContainerColor = Color.White,
+                                    unfocusedContainerColor = Color.White,
+                                    focusedTextColor = Color.Black,
+                                    unfocusedTextColor = Color.Black,
+                                    focusedIndicatorColor = Color.Transparent,
+                                    unfocusedIndicatorColor = Color.Transparent
+                                )
+                            )
+                        }
+                    }
 
                     Spacer(modifier = Modifier.height(14.dp))
 
+                    // Timer detik
+                    var timeLeft by remember { mutableStateOf(59) }
+
+                    LaunchedEffect(timeLeft) {
+                        if (timeLeft > 0) {
+                            kotlinx.coroutines.delay(1000L)
+                            timeLeft -= 1
+                        }
+                    }
+
+                    Text(
+                        text = "00:${if (timeLeft < 10) "0$timeLeft" else timeLeft}",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Red,
+                        modifier = Modifier.padding(bottom = 10.dp)
+                    )
+
                     Button(
                         onClick = {
-                            navController.navigate("verificationPassword")
+                            navController.navigate("newPassword")
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -173,10 +192,25 @@ fun ForgotPassword(navController: NavController) {
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E4178))
                     ) {
                         Text(
-                            "MASUK",
+                            "VERFIKASI",
                             color = Color.White,
                             fontSize = 14.sp,
-                            modifier = Modifier
+                        )
+                    }
+
+                    Row (
+                        modifier = Modifier
+                    ) {
+                        Text(
+                            text = "Verifikasi jika tidak menerima kode! ",
+                            color = Color(0xFF1E4178),
+                            fontSize = 10.sp
+                        )
+
+                        Text(
+                            text = " Kirim ulang",
+                            color = Color.Red,
+                            fontSize = 10.sp
                         )
                     }
                 }

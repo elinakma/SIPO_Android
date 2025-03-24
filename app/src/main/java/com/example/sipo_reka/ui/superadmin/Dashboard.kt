@@ -36,10 +36,11 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.navigation.NavController
 
 // mengatur panjang setiap function dalam dashboard
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()

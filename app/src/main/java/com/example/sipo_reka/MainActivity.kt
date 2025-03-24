@@ -23,6 +23,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.sipo_reka.ui.screen.ForgotPassword
 import androidx.navigation.NavHostController
+import com.example.sipo_reka.ui.screen.NewPassword
+import com.example.sipo_reka.ui.screen.SuccessPassword
+import com.example.sipo_reka.ui.screen.VerificationPassword
+import com.example.sipo_reka.ui.superadmin.DashboardScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,20 +46,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-//@Composable
-//fun AppNavigator() {
-//    var showSplash by remember { mutableStateOf(true) }
-//
-//    if (showSplash) {
-//        SplashScreen {
-//            showSplash = false // Setelah Splash, lanjut ke layar utama
-//        }
-//    } else {
-//        LoginScreen()
-////        DashboardScreen() // Ganti dengan composable utama setelah splash
-//    }
-//}
-
 @Composable
 fun AppNavigator(navController: NavHostController) {
     NavHost(
@@ -71,7 +61,19 @@ fun AppNavigator(navController: NavHostController) {
             LoginScreen(navController)
         }
         composable("forgotPassword") {
-            ForgotPassword()
+            ForgotPassword(navController)
+        }
+        composable("verificationPassword") {
+            VerificationPassword(navController)
+        }
+        composable("newPassword") {
+            NewPassword(navController)
+        }
+        composable("successPassword") {
+            SuccessPassword(navController)
+        }
+        composable("dashboard") {
+            DashboardScreen(navController)
         }
     }
 }
