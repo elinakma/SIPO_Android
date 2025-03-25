@@ -3,6 +3,7 @@ package com.example.sipo_reka.ui.superadmin
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,8 +16,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -53,7 +56,7 @@ fun DashboardScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(15.dp))
         DashboardOverview()
         Spacer(modifier = Modifier.height(15.dp))
-        DashboardMenu()
+        DashboardMenu(navController)
         Spacer(modifier = Modifier.height(15.dp))
     }
 }
@@ -111,14 +114,14 @@ fun DashboardBanner() {
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
             .width(500.dp)
-            .height(85.dp)
+            .wrapContentHeight()
             .shadow(elevation = 6.dp, shape = RoundedCornerShape(5.dp), clip = false)
             .border(-10.dp, Color(0xFFCCC9C9), shape = RoundedCornerShape(5.dp)),
         shape = RoundedCornerShape(5.dp),
         ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(horizontal = 14.dp, vertical = 5.dp),
             verticalArrangement = Arrangement.Center
         ) {
@@ -164,14 +167,14 @@ fun DashboardOverview() {
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
             .width(500.dp)
-            .height(220.dp)
+            .wrapContentHeight()
             .shadow(elevation = 3.dp, shape = RoundedCornerShape(15.dp), clip = false)
             .border(-15.dp, Color(0xFFCCC9C9), shape = RoundedCornerShape(15.dp)), // Border harus positif
         shape = RoundedCornerShape(15.dp),
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(horizontal = 14.dp, vertical = 15.dp),
             verticalArrangement = Arrangement.Top
         ) {
@@ -250,19 +253,19 @@ fun OverviewCard(title: String, count: String, icon: Int) {
 
 // mengatur menu di dashboard
 @Composable
-fun DashboardMenu() {
+fun DashboardMenu(navController: NavController) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
             .width(500.dp)
-            .height(270.dp)
+            .wrapContentHeight()
             .shadow(elevation = 3.dp, shape = RoundedCornerShape(15.dp), clip = false)
             .border(-15.dp, Color(0xFFCCC9C9), shape = RoundedCornerShape(15.dp)),
         shape = RoundedCornerShape(15.dp)
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(horizontal = 14.dp, vertical = 10.dp)
         ) {
             Text(
@@ -282,35 +285,56 @@ fun DashboardMenu() {
 
             // isi dari menu card
             val menuItems = listOf(
-                "Memo" to R.drawable.menu_memo,
-                "Risalah Rapat" to R.drawable.menu_risalah,
-                "Undangan Rapat" to R.drawable.menu_undangan,
-                "Arsip" to R.drawable.menu_arsip,
-                "Laporan" to R.drawable.menu_laporan,
-                "Manajemen Pengguna" to R.drawable.menu_user,
-                "Data Perusahaan" to R.drawable.menu_data,
-                "Info" to R.drawable.menu_info
+//                "Memo" to R.drawable.menu_memo to "memo_screen",
+//                "Risalah Rapat" to R.drawable.menu_risalah,
+//                "Undangan Rapat" to R.drawable.menu_undangan,
+//                "Arsip" to R.drawable.menu_arsip,
+//                "Laporan" to R.drawable.menu_laporan,
+//                "Manajemen Pengguna" to R.drawable.menu_user,
+//                "Data Perusahaan" to R.drawable.menu_data,
+//                "Info" to R.drawable.menu_info,
+                Triple("Memo", R.drawable.menu_memo, "memo_screen"),
+                Triple("Risalah Rapat", R.drawable.menu_risalah, "risalah_screen"),
+                Triple("Undangan Rapat", R.drawable.menu_undangan, "undangan_screen"),
+                Triple("Arsip", R.drawable.menu_arsip, "arsip_screen"),
+                Triple("Laporan", R.drawable.menu_laporan, "laporan_screen"),
+                Triple("Manajemen Pengguna", R.drawable.menu_user, "user_management_screen"),
+                Triple("Data Perusahaan", R.drawable.menu_data, "company_data_screen"),
+                Triple("Info", R.drawable.menu_info, "info_screen")
+
             )
 
+//            LazyVerticalGrid(
+//                columns = GridCells.Fixed(4),
+//                modifier = Modifier.fillMaxWidth()
+//            ) {
+//                items(menuItems.size) { index ->
+//                    val (menu, icon) = menuItems[index]
+//                    MenuCard(menu, icon)
+//                }
+//            }
             LazyVerticalGrid(
                 columns = GridCells.Fixed(4),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                items(menuItems.size) { index ->
-                    val (menu, icon) = menuItems[index]
-                    MenuCard(menu, icon)
+                items(menuItems) { (menu, icon, route) ->
+                    MenuCard(menu, icon, route, navController)
                 }
             }
+
         }
     }
 }
 
 // untuk mengatur menuItems
 @Composable
-fun MenuCard(title: String, icon: Int) {
+//fun MenuCard(title: String, icon: Int) {
+fun MenuCard(title: String, icon: Int, route: String, navController: NavController) {
     Column(
-        modifier = Modifier.padding(5.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier
+            .padding(5.dp)
+            .clickable { navController.navigate(route) }, // Navigasi saat diklik
+    horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
             painter = painterResource(icon),

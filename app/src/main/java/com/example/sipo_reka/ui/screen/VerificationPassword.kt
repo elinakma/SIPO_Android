@@ -76,24 +76,44 @@ fun VerificationPassword(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // Header Background Image
-                Box(
+//                Box(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(100.dp),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    Column(
+//                        horizontalAlignment = Alignment.CenterHorizontally,
+//                        verticalArrangement = Arrangement.Center
+//                    ) {
+//                        Image(
+//                            painter = painterResource(id = R.drawable.logo_reka),
+//                            contentDescription = "Logo Reka",
+//                            modifier = Modifier
+//                                .width(120.dp)
+//                                .height(120.dp)
+//                        )
+//                    }
+//                }
+
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(100.dp),
-                    contentAlignment = Alignment.Center
+                        .padding(5.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.logo_reka),
-                            contentDescription = "Logo Reka",
-                            modifier = Modifier
-                                .width(120.dp)
-                                .height(120.dp)
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ikon_back),
+                            contentDescription = "Back"
                         )
                     }
+                    Spacer(modifier = Modifier.width(40.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.logo_reka),
+                        contentDescription = "Logo Reka",
+                        modifier = Modifier.size(120.dp)
+                    )
                 }
 
                 Column(
