@@ -108,7 +108,7 @@ fun LoginScreen(navController: NavController) {
 
                         Text(
                             text = "SISTEM INFORMASI PERSURATAN",
-                            fontSize = 20.sp,
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
@@ -137,7 +137,7 @@ fun LoginScreen(navController: NavController) {
                             )
                         },
                         placeholder = { Text("Masukkan email") },
-                        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 16.sp),
+                        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 14.sp),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 20.dp, end = 20.dp, bottom = 10.dp)
@@ -166,7 +166,7 @@ fun LoginScreen(navController: NavController) {
                             )
                         },
                         placeholder = { Text("Masukkan kata sandi") },
-                        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 16.sp),
+                        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 14.sp),
 //                        visualTransformation = PasswordVisualTransformation(),
                         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -207,7 +207,10 @@ fun LoginScreen(navController: NavController) {
                                 modifier = Modifier
                                     .padding(start = 8.dp)
                             )
-                            Text("Ingatkan Saya")
+                            Text(
+                                "Ingatkan Saya",
+                                fontSize = 14.sp
+                            )
                         }
                         Text(
                             text = "Lupa Password?",
@@ -225,7 +228,7 @@ fun LoginScreen(navController: NavController) {
                     Spacer(modifier = Modifier.height(14.dp))
 
                     Button(
-                        onClick = { },
+                        onClick = { navController.navigate("dashboard")},
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp)
@@ -236,7 +239,7 @@ fun LoginScreen(navController: NavController) {
                         Text(
                             "MASUK",
                             color = Color.White,
-                            fontSize = 18.sp,
+                            fontSize = 14.sp,
                         )
                     }
                 }

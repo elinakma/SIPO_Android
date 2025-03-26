@@ -9,20 +9,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.sipo_reka.ui.screen.SplashScreen
 import com.example.sipo_reka.ui.theme.SIPO_RekaTheme
-import androidx.compose.runtime.*
 import com.example.sipo_reka.ui.screen.LoginScreen
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.sipo_reka.ui.screen.ForgotPassword
 import androidx.navigation.NavHostController
+import com.example.sipo_reka.ui.screen.NewPassword
+import com.example.sipo_reka.ui.screen.SuccessPassword
+import com.example.sipo_reka.ui.screen.VerificationPassword
+import com.example.sipo_reka.ui.superadmin.DashboardScreen
+import com.example.sipo_reka.ui.superadmin.MemoSuperadmin
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,27 +35,10 @@ class MainActivity : ComponentActivity() {
             SIPO_RekaTheme {
                 val navController = rememberNavController() // Buat NavController
                 AppNavigator(navController)
-//                Navigation()
-//                LoginScreen()
-//                MemoSuperadmin()
             }
         }
     }
 }
-
-//@Composable
-//fun AppNavigator() {
-//    var showSplash by remember { mutableStateOf(true) }
-//
-//    if (showSplash) {
-//        SplashScreen {
-//            showSplash = false // Setelah Splash, lanjut ke layar utama
-//        }
-//    } else {
-//        LoginScreen()
-////        DashboardScreen() // Ganti dengan composable utama setelah splash
-//    }
-//}
 
 @Composable
 fun AppNavigator(navController: NavHostController) {
@@ -71,8 +55,23 @@ fun AppNavigator(navController: NavHostController) {
             LoginScreen(navController)
         }
         composable("forgotPassword") {
-            ForgotPassword()
+            ForgotPassword(navController)
         }
+        composable("verificationPassword") {
+            VerificationPassword(navController)
+        }
+        composable("newPassword") {
+            NewPassword(navController)
+        }
+        composable("successPassword") {
+            SuccessPassword(navController)
+        }
+        composable("dashboard") {
+            DashboardScreen(navController)
+        }
+
+//        Superadmin
+        composable("memo_screen") { MemoSuperadmin(navController) }
     }
 }
 

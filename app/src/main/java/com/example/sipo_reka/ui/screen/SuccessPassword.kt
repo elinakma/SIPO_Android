@@ -58,7 +58,7 @@ import androidx.navigation.compose.rememberNavController
 
 
 @Composable
-fun ForgotPassword(navController: NavController) {
+fun SuccessPassword(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -120,25 +120,42 @@ fun ForgotPassword(navController: NavController) {
                 }
 
                 Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.success),
+                        contentDescription = "Logo Reka",
+                        modifier = Modifier
+                            .width(80.dp)
+                            .height(80.dp)
+                    )
+                }
+
+                Column(
                     modifier = Modifier
-                        .padding(start = 20.dp, end = 20.dp, bottom = 10.dp, top = 0.dp)
+                        .padding(start = 20.dp, end = 20.dp, bottom = 10.dp, top = 25.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "Lupa Kata Sandi",
+                        text = "Berhasil",
                         fontSize = 20.sp,
-                        textAlign = TextAlign.Left,
+                        textAlign = TextAlign.Center,
                         color = Color(0xFF1E4178),
                         modifier = Modifier
-                            .padding(bottom = 20.dp)
+                            .padding(bottom = 5.dp)
                     )
 
                     Text(
-                        text = "Masukkan email Anda untuk proses verifikasi, kami akan mengirimkan kode 4 digit ke email Anda.",
-                        fontSize = 14.sp,
-                        textAlign = TextAlign.Left,
-                        color = Color(0xFFCCC9C9)
+                        text = "Kata sandi Anda telah berhasil diatur ulang.",
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                        color = Color(0xFFCCC9C9),
+
                     )
                 }
+
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Input Fields
@@ -147,43 +164,9 @@ fun ForgotPassword(navController: NavController) {
                         .fillMaxWidth()
                         .padding(bottom = 15.dp)
                 ) {
-                    val emailState = remember { mutableStateOf("") }
-                    val passwordState = remember { mutableStateOf("") }
-                    var passwordVisible by remember { mutableStateOf(false) }
-
-                    Text(
-                        text = "Email",
-                        fontSize = 16.sp,
-                        color = Color(0xFF1E4178),
-                        modifier = Modifier
-                            .padding(start = 20.dp, bottom = 5.dp),
-                    )
-
-                    TextField(
-                        value = emailState.value,
-                        onValueChange = { emailState.value = it},
-                        placeholder = { Text("Masukkan email") },
-                        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 16.sp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp, end = 20.dp, bottom = 10.dp)
-                            .height(50.dp)
-                            .border(1.dp, Color(0xFFCCC9C9), RoundedCornerShape(8.dp)),
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.White,
-                            unfocusedContainerColor = Color.White,
-                            focusedTextColor = Color.Black,
-                            unfocusedTextColor = Color.Black,
-                            focusedIndicatorColor = Color.Transparent, // Menghilangkan indicator default
-                            unfocusedIndicatorColor = Color.Transparent // Menghilangkan indicator default
-                        )
-                    )
-
-                    Spacer(modifier = Modifier.height(14.dp))
-
                     Button(
                         onClick = {
-                            navController.navigate("verificationPassword")
+                            navController.navigate("dashboard")
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -193,7 +176,7 @@ fun ForgotPassword(navController: NavController) {
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E4178))
                     ) {
                         Text(
-                            "MASUK",
+                            "LANJUT",
                             color = Color.White,
                             fontSize = 14.sp,
                             modifier = Modifier
