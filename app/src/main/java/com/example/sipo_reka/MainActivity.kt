@@ -24,6 +24,7 @@ import com.example.sipo_reka.ui.screen.SuccessPassword
 import com.example.sipo_reka.ui.screen.VerificationPassword
 import com.example.sipo_reka.ui.superadmin.DashboardScreen
 import com.example.sipo_reka.ui.superadmin.MemoSuperadmin
+import com.example.sipo_reka.ui.superadmin.UserManage
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,6 +73,7 @@ fun AppNavigator(navController: NavHostController) {
 
 //        Superadmin
         composable("memo_screen") { MemoSuperadmin(navController) }
+        composable("user_management_screen") { UserManage(navController) }
     }
 }
 

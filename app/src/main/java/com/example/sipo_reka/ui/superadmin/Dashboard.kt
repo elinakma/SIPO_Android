@@ -285,14 +285,6 @@ fun DashboardMenu(navController: NavController) {
 
             // isi dari menu card
             val menuItems = listOf(
-//                "Memo" to R.drawable.menu_memo to "memo_screen",
-//                "Risalah Rapat" to R.drawable.menu_risalah,
-//                "Undangan Rapat" to R.drawable.menu_undangan,
-//                "Arsip" to R.drawable.menu_arsip,
-//                "Laporan" to R.drawable.menu_laporan,
-//                "Manajemen Pengguna" to R.drawable.menu_user,
-//                "Data Perusahaan" to R.drawable.menu_data,
-//                "Info" to R.drawable.menu_info,
                 Triple("Memo", R.drawable.menu_memo, "memo_screen"),
                 Triple("Risalah Rapat", R.drawable.menu_risalah, "risalah_screen"),
                 Triple("Undangan Rapat", R.drawable.menu_undangan, "undangan_screen"),
@@ -304,15 +296,6 @@ fun DashboardMenu(navController: NavController) {
 
             )
 
-//            LazyVerticalGrid(
-//                columns = GridCells.Fixed(4),
-//                modifier = Modifier.fillMaxWidth()
-//            ) {
-//                items(menuItems.size) { index ->
-//                    val (menu, icon) = menuItems[index]
-//                    MenuCard(menu, icon)
-//                }
-//            }
             LazyVerticalGrid(
                 columns = GridCells.Fixed(4),
                 modifier = Modifier.fillMaxWidth()
