@@ -64,22 +64,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 
 @Composable
-fun MemoSuperadmin(navController: NavController) {
+fun UndanganSuperadmin(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize().background(Color.White).padding(16.dp)
     ) {
-        MemoTitle(navController)
+        UndanganTitle(navController)
         Spacer(modifier = Modifier.height(20.dp))
-        MemoSearch()
+        UndanganSearch()
         Spacer(modifier = Modifier.height(10.dp))
-        MemoFitur()
+        UndanganFitur()
         Spacer(modifier = Modifier.height(15.dp))
-        MemoTable()
+        UndanganTable()
     }
 }
 
 @Composable
-fun MemoTitle(navController: NavController) {
+fun UndanganTitle(navController: NavController) {
     Column(
         modifier = Modifier.padding(top = 25.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -95,7 +95,7 @@ fun MemoTitle(navController: NavController) {
                 )
             }
             Text(
-                text = "MEMO",
+                text = "UNDANGAN",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
@@ -107,7 +107,7 @@ fun MemoTitle(navController: NavController) {
 }
 
 @Composable
-fun MemoSearch() {
+fun UndanganSearch() {
     var searchQuery by remember { mutableStateOf("") }
 
     Row(
@@ -150,7 +150,7 @@ fun MemoSearch() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MemoFitur() {
+fun UndanganFitur() {
     var expanded by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val datePickerStateAwal = rememberDatePickerState()
@@ -229,7 +229,7 @@ fun MemoFitur() {
                 IconButton(onClick = { showDatePickerAwal.value = true }) {
                     Icon(Icons.Default.DateRange, contentDescription = "Tanggal",
                         modifier = Modifier.width(13.dp).height(13.dp).padding(0.dp)
-                        )
+                    )
                 }
             }
         }
@@ -324,7 +324,7 @@ fun MemoFitur() {
 }
 
 @Composable
-fun MemoTable() {
+fun UndanganTable() {
     val tableData = (1..20).map { index ->
         val status = when (index % 3) {
             0 -> "Disetujui"
@@ -333,7 +333,7 @@ fun MemoTable() {
         }
         listOf(
             index.toString(),
-            "Memo Monitoring Resiko Proyek $index",
+            "Undangan Rapat Kerja Kajian $index",
             "01-01-2024",
             "S-00$index",
             "5.5/REKA/GEN/QM & SHE (IT DAN K3)/III/2025",
@@ -345,7 +345,7 @@ fun MemoTable() {
     }
 
     val columnHeaders = listOf(
-        "No", "Nama Dokumen", "Tanggal Memo", "Seri", "Dokumen",
+        "No", "Nama Dokumen", "Tanggal Undangan", "Seri", "Dokumen",
         "Tanggal Disahkan", "Divisi", "Status", "Aksi"
     )
     val columnWidths = listOf(50.dp, 150.dp, 120.dp, 80.dp, 150.dp, 120.dp, 120.dp, 100.dp, 100.dp)
@@ -381,10 +381,10 @@ fun MemoTable() {
                     rowData.forEachIndexed { index, value ->
                         when {
                             index == rowData.lastIndex -> {
-                                DeleteButtonCell(width = columnWidths[index])
+                                UndanganDeleteButtonCell(width = columnWidths[index])
                             }
                             index == 7 -> {
-                                TableCell(
+                                UndanganTableCell(
                                     text = value,
                                     width = columnWidths[index],
                                     isHeader = false,
@@ -394,7 +394,7 @@ fun MemoTable() {
                             }
                             else -> {
                                 val textColor = if (index == 1) statusColor else Color.Black
-                                TableCell(
+                                UndanganTableCell(
                                     text = value,
                                     width = columnWidths[index],
                                     isHeader = false,
@@ -412,7 +412,7 @@ fun MemoTable() {
 }
 
 @Composable
-fun TableCell(
+fun UndanganTableCell(
     text: String,
     width: Dp,
     isHeader: Boolean,
@@ -469,7 +469,7 @@ fun TableCell(
 }
 
 @Composable
-fun DeleteButtonCell(width: Dp) {
+fun UndanganDeleteButtonCell(width: Dp) {
     Box(
         modifier = Modifier
             .width(width)

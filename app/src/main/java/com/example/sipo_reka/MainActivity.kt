@@ -24,6 +24,8 @@ import com.example.sipo_reka.ui.screen.SuccessPassword
 import com.example.sipo_reka.ui.screen.VerificationPassword
 import com.example.sipo_reka.ui.superadmin.DashboardScreen
 import com.example.sipo_reka.ui.superadmin.MemoSuperadmin
+import com.example.sipo_reka.ui.superadmin.RisalahSuperadmin
+import com.example.sipo_reka.ui.superadmin.UndanganSuperadmin
 import com.example.sipo_reka.ui.superadmin.UserManage
 
 class MainActivity : ComponentActivity() {
@@ -52,28 +54,18 @@ fun AppNavigator(navController: NavHostController) {
                 navController.navigate("login")
             }
         }
-        composable("login") {
-            LoginScreen(navController)
-        }
-        composable("forgotPassword") {
-            ForgotPassword(navController)
-        }
-        composable("verificationPassword") {
-            VerificationPassword(navController)
-        }
-        composable("newPassword") {
-            NewPassword(navController)
-        }
-        composable("successPassword") {
-            SuccessPassword(navController)
-        }
-        composable("dashboard") {
-            DashboardScreen(navController)
-        }
+        composable("login") { LoginScreen(navController) }
+        composable("forgotPassword") { ForgotPassword(navController) }
+        composable("verificationPassword") { VerificationPassword(navController) }
+        composable("newPassword") { NewPassword(navController) }
+        composable("successPassword") { SuccessPassword(navController) }
+        composable("dashboard") { DashboardScreen(navController) }
 
 //        Superadmin
         composable("memo_screen") { MemoSuperadmin(navController) }
         composable("user_management_screen") { UserManage(navController) }
+        composable("undangan_screen") { UndanganSuperadmin(navController) }
+        composable("risalah_screen") { RisalahSuperadmin(navController) }
     }
 }
 
