@@ -95,8 +95,8 @@ fun UndanganTitle(navController: NavController) {
                 )
             }
             Text(
-                text = "UNDANGAN",
-                fontSize = 20.sp,
+                text = "UNDANGAN RAPAT",
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
                 modifier = Modifier.weight(1f).align(Alignment.CenterVertically).padding(end = 40.dp),
@@ -380,8 +380,15 @@ fun UndanganTable() {
                 Row {
                     rowData.forEachIndexed { index, value ->
                         when {
+//                            index == rowData.lastIndex -> {
+//                                UndanganDeleteButtonCell(width = columnWidths[index])
+//                            }
                             index == rowData.lastIndex -> {
-                                UndanganDeleteButtonCell(width = columnWidths[index])
+                                val showArchiveIcon = rowData[7] == "Disetujui"
+                                ActionButtons(
+                                    width = columnWidths[index],
+                                    showArchiveIcon = showArchiveIcon
+                                )
                             }
                             index == 7 -> {
                                 UndanganTableCell(
@@ -484,6 +491,38 @@ fun UndanganDeleteButtonCell(width: Dp) {
                 tint = Color.Red, // Warna ikon hapus
                 modifier = Modifier.size(20.dp) // Ukuran ikon
             )
+        }
+    }
+}
+
+@Composable
+fun ActionButtons(width: Dp, showArchiveIcon: Boolean) {
+    val context = LocalContext.current
+    Box(
+        modifier = Modifier.width(width).wrapContentHeight().fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = { /* Tambahkan aksi hapus di sini */ }) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Hapus",
+                    tint = Color.Red,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+            if (showArchiveIcon) {
+                IconButton(onClick = {
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ikon_arsip),
+//                        imageVector = Icons.Default.Archive,
+                        contentDescription = "Arsip",
+                        tint = Color(0xFF0095FF),
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+            }
         }
     }
 }

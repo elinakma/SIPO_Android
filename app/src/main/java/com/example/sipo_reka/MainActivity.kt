@@ -19,6 +19,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.sipo_reka.ui.screen.ForgotPassword
 import androidx.navigation.NavHostController
+import com.example.sipo_reka.ui.arsip.Arsip
+import com.example.sipo_reka.ui.arsip.ArsipMemo
+import com.example.sipo_reka.ui.arsip.MemoArsip
+import com.example.sipo_reka.ui.arsip.RisalahArsip
+import com.example.sipo_reka.ui.arsip.UndanganArsip
 import com.example.sipo_reka.ui.screen.NewPassword
 import com.example.sipo_reka.ui.screen.SuccessPassword
 import com.example.sipo_reka.ui.screen.VerificationPassword
@@ -66,6 +71,12 @@ fun AppNavigator(navController: NavHostController) {
         composable("user_management_screen") { UserManage(navController) }
         composable("undangan_screen") { UndanganSuperadmin(navController) }
         composable("risalah_screen") { RisalahSuperadmin(navController) }
+
+//        Arsip
+        composable("arsip_screen") { Arsip(navController) }
+        composable("memoArsip") { MemoArsip(navController) }
+        composable("undanganArsip") { UndanganArsip(navController) }
+        composable("risalahArsip") { RisalahArsip(navController) }
     }
 }
 

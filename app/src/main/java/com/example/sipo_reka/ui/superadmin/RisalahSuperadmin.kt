@@ -95,8 +95,8 @@ fun RisalahTitle(navController: NavController) {
                 )
             }
             Text(
-                text = "RISALAH",
-                fontSize = 20.sp,
+                text = "RISALAH RAPAT",
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
                 modifier = Modifier.weight(1f).align(Alignment.CenterVertically).padding(end = 40.dp),
@@ -380,11 +380,17 @@ fun RisalahTable() {
                 Row {
                     rowData.forEachIndexed { index, value ->
                         when {
+//                            index == rowData.lastIndex -> {
+//                                RisalahDeleteButtonCell(width = columnWidths[index])
+//                            }
                             index == rowData.lastIndex -> {
-                                UndanganDeleteButtonCell(width = columnWidths[index])
-                            }
-                            index == 7 -> {
-                                UndanganTableCell(
+                                val showArchiveIcon = rowData[7] == "Disetujui"
+                                ActionButtonsCel(
+                                    width = columnWidths[index],
+                                    showArchiveIcon = showArchiveIcon
+                                )
+                            }                            index == 7 -> {
+                                RisalahTableCell(
                                     text = value,
                                     width = columnWidths[index],
                                     isHeader = false,
@@ -484,6 +490,38 @@ fun RisalahDeleteButtonCell(width: Dp) {
                 tint = Color.Red, // Warna ikon hapus
                 modifier = Modifier.size(20.dp) // Ukuran ikon
             )
+        }
+    }
+}
+
+@Composable
+fun ActionButtonsCel(width: Dp, showArchiveIcon: Boolean) {
+    val context = LocalContext.current
+    Box(
+        modifier = Modifier.width(width).wrapContentHeight().fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = { /* Tambahkan aksi hapus di sini */ }) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Hapus",
+                    tint = Color.Red,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+            if (showArchiveIcon) {
+                IconButton(onClick = {
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ikon_arsip),
+//                        imageVector = Icons.Default.Archive,
+                        contentDescription = "Arsip",
+                        tint = Color(0xFF0095FF),
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+            }
         }
     }
 }
