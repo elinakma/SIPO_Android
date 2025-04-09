@@ -65,22 +65,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 
 @Composable
-fun MemoAdmin(navController: NavController) {
+fun UndanganAdmin(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize().background(Color.White).padding(16.dp)
     ) {
-        MemoTitleAdmin(navController)
+        UndanganTitleAdmin(navController)
         Spacer(modifier = Modifier.height(20.dp))
-        MemoSearchAdmin()
+        UndanganSearchAdmin()
         Spacer(modifier = Modifier.height(10.dp))
-        MemoFiturAdmin()
+        UndanganFiturAdmin()
         Spacer(modifier = Modifier.height(15.dp))
-        MemoTableAdmin(navController)
+        UndanganTableAdmin(navController)
     }
 }
 
 @Composable
-fun MemoTitleAdmin(navController: NavController) {
+fun UndanganTitleAdmin(navController: NavController) {
     Column(
         modifier = Modifier.padding(top = 25.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -96,8 +96,8 @@ fun MemoTitleAdmin(navController: NavController) {
                 )
             }
             Text(
-                text = "MEMO",
-                fontSize = 20.sp,
+                text = "UNDANGAN RAPAT",
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
                 modifier = Modifier.weight(1f).align(Alignment.CenterVertically).padding(end = 40.dp),
@@ -108,7 +108,7 @@ fun MemoTitleAdmin(navController: NavController) {
 }
 
 @Composable
-fun MemoSearchAdmin() {
+fun UndanganSearchAdmin() {
     var searchQuery by remember { mutableStateOf("") }
 
     Row(
@@ -151,7 +151,7 @@ fun MemoSearchAdmin() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MemoFiturAdmin() {
+fun UndanganFiturAdmin() {
     var expanded by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val datePickerStateAwal = rememberDatePickerState()
@@ -325,7 +325,7 @@ fun MemoFiturAdmin() {
 }
 
 @Composable
-fun MemoTableAdmin(navController: NavController) {
+fun UndanganTableAdmin(navController: NavController) {
     val tableData = (1..20).map { index ->
         val status = when (index % 3) {
             0 -> "Disetujui"
@@ -334,7 +334,7 @@ fun MemoTableAdmin(navController: NavController) {
         }
         listOf(
             index.toString(),
-            "Memo Monitoring Resiko Proyek $index",
+            "Undangan Rapat Kajian $index",
             "01-01-2024",
             "S-00$index",
             "5.5/REKA/GEN/QM & SHE (IT DAN K3)/III/2025",
@@ -346,7 +346,7 @@ fun MemoTableAdmin(navController: NavController) {
     }
 
     val columnHeaders = listOf(
-        "No", "Nama Dokumen", "Tanggal Memo", "Seri", "Dokumen",
+        "No", "Nama Dokumen", "Tanggal Undangan", "Seri", "Dokumen",
         "Tanggal Disahkan", "Divisi", "Status", "Aksi"
     )
     val columnWidths = listOf(50.dp, 150.dp, 120.dp, 80.dp, 150.dp, 120.dp, 120.dp, 100.dp, 150.dp)
@@ -364,7 +364,7 @@ fun MemoTableAdmin(navController: NavController) {
             // Header
             Row(Modifier.fillMaxWidth().background(Color.White)) {
                 columnHeaders.forEachIndexed { index, title ->
-                    TableCellAdmin(text = title, width = columnWidths[index], isHeader = true)
+                    UndanganTableCellAdmin(text = title, width = columnWidths[index], isHeader = true)
                 }
             }
 
@@ -383,14 +383,14 @@ fun MemoTableAdmin(navController: NavController) {
                         when {
                             index == rowData.lastIndex -> {
                                 val showArchiveIcon = rowData[7] == "Disetujui"
-                                ActionButtonsCell(
+                                UndanganActionButtons(
                                     width = columnWidths[index],
                                     showArchiveIcon = showArchiveIcon,
                                     navController = navController
                                 )
                             }
                             index == 7 -> {
-                                TableCellAdmin(
+                                UndanganTableCellAdmin(
                                     text = value,
                                     width = columnWidths[index],
                                     isHeader = false,
@@ -400,7 +400,7 @@ fun MemoTableAdmin(navController: NavController) {
                             }
                             else -> {
                                 val textColor = if (index == 1) statusColor else Color.Black
-                                TableCellAdmin(
+                                UndanganTableCellAdmin(
                                     text = value,
                                     width = columnWidths[index],
                                     isHeader = false,
@@ -418,7 +418,7 @@ fun MemoTableAdmin(navController: NavController) {
 }
 
 @Composable
-fun TableCellAdmin(
+fun UndanganTableCellAdmin(
     text: String,
     width: Dp,
     isHeader: Boolean,
@@ -475,14 +475,14 @@ fun TableCellAdmin(
 }
 
 @Composable
-fun ActionButtonsCell(width: Dp, showArchiveIcon: Boolean, navController: NavController) {
+fun UndanganActionButtons(width: Dp, showArchiveIcon: Boolean, navController: NavController) {
     val context = LocalContext.current
     Box(
         modifier = Modifier.width(width).wrapContentHeight().fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = {navController.navigate("kirimMemoAdmin")
+            IconButton(onClick = {navController.navigate("kirimUndanganAdmin")
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ikon_share),
@@ -502,7 +502,7 @@ fun ActionButtonsCell(width: Dp, showArchiveIcon: Boolean, navController: NavCon
                     )
                 }
             }
-            IconButton(onClick = {navController.navigate("detailMemoAdmin")}) {
+            IconButton(onClick = {navController.navigate("detailUndanganAdmin")}) {
                 Icon(
                     painter = painterResource(id = R.drawable.ikon_view),
                     contentDescription = "View",
