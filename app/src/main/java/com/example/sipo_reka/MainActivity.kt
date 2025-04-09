@@ -11,9 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import com.example.sipo_reka.ui.screen.SplashScreen
 import com.example.sipo_reka.ui.theme.SIPO_RekaTheme
 import com.example.sipo_reka.ui.screen.LoginScreen
@@ -22,18 +19,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.sipo_reka.ui.screen.ForgotPassword
 import androidx.navigation.NavHostController
-import com.example.sipo_reka.ui.admin.DetailMemoAdminScreen
-import com.example.sipo_reka.ui.admin.KirimMemoAdminScreen
-import com.example.sipo_reka.ui.screen.DataPerusahaanScreen
 import com.example.sipo_reka.ui.screen.NewPassword
-import com.example.sipo_reka.ui.screen.ProfilPengguna
-import com.example.sipo_reka.ui.screen.ProfilesScreen
 import com.example.sipo_reka.ui.screen.SuccessPassword
 import com.example.sipo_reka.ui.screen.VerificationPassword
-import com.example.sipo_reka.ui.superadmin.DashboardsScreen
-import com.example.sipo_reka.ui.superadmin.DetailMemoScreen
-import com.example.sipo_reka.ui.superadmin.DetailRisalahScreen
-import com.example.sipo_reka.ui.superadmin.DetailUndanganScreen
+import com.example.sipo_reka.ui.superadmin.DashboardScreen
 import com.example.sipo_reka.ui.superadmin.MemoSuperadmin
 import com.example.sipo_reka.ui.superadmin.RisalahSuperadmin
 import com.example.sipo_reka.ui.superadmin.UndanganSuperadmin
@@ -44,7 +33,6 @@ class MainActivity : ComponentActivity() {
         setTheme(R.style.Theme_SIPO_Reka)
 
         super.onCreate(savedInstanceState)
-        hideSystemUI()
         enableEdgeToEdge()
         setContent {
             SIPO_RekaTheme {
@@ -52,16 +40,6 @@ class MainActivity : ComponentActivity() {
                 AppNavigator(navController)
             }
         }
-    }
-
-    private fun hideSystemUI() {
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
-        val controller = WindowCompat.getInsetsController(window, window.decorView)
-        controller?.systemBarsBehavior =
-            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-
-        controller?.hide(WindowInsetsCompat.Type.systemBars())
     }
 }
 
@@ -81,23 +59,13 @@ fun AppNavigator(navController: NavHostController) {
         composable("verificationPassword") { VerificationPassword(navController) }
         composable("newPassword") { NewPassword(navController) }
         composable("successPassword") { SuccessPassword(navController) }
-        composable("dashboard") { DashboardsScreen(navController) }
-        composable("profile") { ProfilesScreen(navController) }
-        composable("dataPerusahaan") { DataPerusahaanScreen(navController) }
-        composable("detailMemo") { DetailMemoScreen(navController) }
-
-        // SEMENTARA
-        composable("detailUndangan") { DetailUndanganScreen(navController) }
-        composable("detailRisalah") { DetailRisalahScreen(navController) }
-        composable("detailMemoAdmin") { DetailMemoAdminScreen(navController) }
-        composable("kirimMemoAdmin") { KirimMemoAdminScreen(navController) }
+        composable("dashboard") { DashboardScreen(navController) }
 
 //        Superadmin
         composable("memo_screen") { MemoSuperadmin(navController) }
         composable("user_management_screen") { UserManage(navController) }
         composable("undangan_screen") { UndanganSuperadmin(navController) }
         composable("risalah_screen") { RisalahSuperadmin(navController) }
-        composable("profile_screen") {ProfilPengguna(navController)}
     }
 }
 

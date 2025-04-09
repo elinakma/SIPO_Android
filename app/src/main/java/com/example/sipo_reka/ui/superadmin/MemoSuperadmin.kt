@@ -56,6 +56,7 @@ import java.util.Locale
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
@@ -380,8 +381,15 @@ fun MemoTable() {
                 Row {
                     rowData.forEachIndexed { index, value ->
                         when {
+//                            index == rowData.lastIndex -> {
+//                                DeleteButtonCell(width = columnWidths[index])
+//                            }
                             index == rowData.lastIndex -> {
-                                DeleteButtonCell(width = columnWidths[index])
+                                val showArchiveIcon = rowData[7] == "Disetujui"
+                                ActionButtonsCell(
+                                    width = columnWidths[index],
+                                    showArchiveIcon = showArchiveIcon
+                                )
                             }
                             index == 7 -> {
                                 TableCell(
@@ -484,6 +492,38 @@ fun DeleteButtonCell(width: Dp) {
                 tint = Color.Red, // Warna ikon hapus
                 modifier = Modifier.size(20.dp) // Ukuran ikon
             )
+        }
+    }
+}
+
+@Composable
+fun ActionButtonsCell(width: Dp, showArchiveIcon: Boolean) {
+    val context = LocalContext.current
+    Box(
+        modifier = Modifier.width(width).wrapContentHeight().fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = { /* Tambahkan aksi hapus di sini */ }) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Hapus",
+                    tint = Color.Red,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+            if (showArchiveIcon) {
+                IconButton(onClick = {
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ikon_arsip),
+//                        imageVector = Icons.Default.Archive,
+                        contentDescription = "Arsip",
+                        tint = Color(0xFF0095FF),
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+            }
         }
     }
 }
