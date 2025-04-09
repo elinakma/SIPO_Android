@@ -322,13 +322,7 @@ fun DashboardMenu(navController: NavController) {
                 Triple("Laporan", R.drawable.menu_laporan, "laporan_screen"),
                 Triple("Manajemen Pengguna", R.drawable.menu_user, "user_management_screen"),
                 Triple("Data Perusahaan", R.drawable.menu_data, "dataPerusahaan"),
-                Triple("Info1", R.drawable.menu_info, "detailMemo"),
-                Triple("Info2", R.drawable.menu_info, "detailUndangan"),
-                Triple("Info3", R.drawable.menu_info, "detailRisalah"),
-                Triple("Info4", R.drawable.menu_info, "detailMemoAdmin"),
-                Triple("Info5", R.drawable.menu_info, "kirimMemoAdmin"),
-                Triple("Info6", R.drawable.menu_info, "detailMemoDiterima"),
-                Triple("Info7", R.drawable.menu_info, "detailMemoTerkirim")
+                Triple("Info", R.drawable.menu_info, "info")
             )
 
             LazyVerticalGrid(

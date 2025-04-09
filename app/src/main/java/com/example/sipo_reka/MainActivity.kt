@@ -114,11 +114,6 @@ fun AppNavigator(navController: NavHostController) {
         composable("dataPerusahaan") { DataPerusahaanScreen(navController) }
         composable("detailMemo") { DetailMemoScreen(navController) }
 
-        // SEMENTARA
-        composable("detailUndangan") { DetailUndanganScreen(navController) }
-        composable("detailRisalah") { DetailRisalahScreen(navController) }
-        composable("detailMemoDiterima") { DetailMemoDiterimaScreen(navController) }
-
         // Superadmin
         composable("memo_screen") { MemoSuperadmin(navController) }
         composable("user_management_screen") { UserManage(navController) }
