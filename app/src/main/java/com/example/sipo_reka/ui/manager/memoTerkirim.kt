@@ -63,22 +63,22 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun MemoDiterima(navController: NavController) {
+fun MemoTerkirim(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize().background(Color.White).padding(16.dp)
     ) {
-        MemoDiterimaTitle(navController)
+        MemoTerkirimTitle(navController)
         Spacer(modifier = Modifier.height(20.dp))
-        MemoDiterimaSearch()
+        MemoTerkirimSearch()
         Spacer(modifier = Modifier.height(10.dp))
-        MemoDiterimaFitur()
+        MemoTerkirimFitur()
         Spacer(modifier = Modifier.height(15.dp))
-        MemoDiterimaTable(navController)
+        MemoTerkirimTable(navController)
     }
 }
 
 @Composable
-fun MemoDiterimaTitle(navController: NavController) {
+fun MemoTerkirimTitle(navController: NavController) {
     Column(
         modifier = Modifier.padding(top = 25.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -94,7 +94,7 @@ fun MemoDiterimaTitle(navController: NavController) {
                 )
             }
             Text(
-                text = "MEMO DITERIMA",
+                text = "MEMO TERKIRIM",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
@@ -106,7 +106,7 @@ fun MemoDiterimaTitle(navController: NavController) {
 }
 
 @Composable
-fun MemoDiterimaSearch() {
+fun MemoTerkirimSearch() {
     var searchQuery by remember { mutableStateOf("") }
 
     Row(
@@ -149,7 +149,7 @@ fun MemoDiterimaSearch() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MemoDiterimaFitur() {
+fun MemoTerkirimFitur() {
     var expanded by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val datePickerStateAwal = rememberDatePickerState()
@@ -325,7 +325,7 @@ fun MemoDiterimaFitur() {
 }
 
 @Composable
-fun MemoDiterimaTable(navController: NavController) {
+fun MemoTerkirimTable(navController: NavController) {
     val tableData = (1..20).map { index ->
         val status = when (index % 3) {
             0 -> "Disetujui"
@@ -364,7 +364,7 @@ fun MemoDiterimaTable(navController: NavController) {
             // Header
             Row(Modifier.fillMaxWidth().background(Color.White)) {
                 columnHeaders.forEachIndexed { index, title ->
-                    MemoTableCell(text = title, width = columnWidths[index], isHeader = true)
+                    MemoTerkirimTableCell(text = title, width = columnWidths[index], isHeader = true)
                 }
             }
 
@@ -386,14 +386,14 @@ fun MemoDiterimaTable(navController: NavController) {
 //                            }
                             index == rowData.lastIndex -> {
                                 val showArchiveIcon = rowData[7] == "Disetujui"
-                                MemoActionButtons(
+                                MemoTerkirimActionButtons(
                                     width = columnWidths[index],
                                     showArchiveIcon = showArchiveIcon,
                                     navController = navController
                                 )
                             }
                             index == 7 -> {
-                                MemoTableCell(
+                                MemoTerkirimTableCell(
                                     text = value,
                                     width = columnWidths[index],
                                     isHeader = false,
@@ -403,7 +403,7 @@ fun MemoDiterimaTable(navController: NavController) {
                             }
                             else -> {
                                 val textColor = if (index == 1) statusColor else Color.Black
-                                MemoTableCell(
+                                MemoTerkirimTableCell(
                                     text = value,
                                     width = columnWidths[index],
                                     isHeader = false,
@@ -421,7 +421,7 @@ fun MemoDiterimaTable(navController: NavController) {
 }
 
 @Composable
-fun MemoTableCell(
+fun MemoTerkirimTableCell(
     text: String,
     width: Dp,
     isHeader: Boolean,
@@ -478,7 +478,7 @@ fun MemoTableCell(
 }
 
 @Composable
-fun MemoDeleteButton(width: Dp) {
+fun MemoTerkirimDeleteButton(width: Dp) {
     Box(
         modifier = Modifier
             .width(width)
@@ -498,14 +498,14 @@ fun MemoDeleteButton(width: Dp) {
 }
 
 @Composable
-fun MemoActionButtons(width: Dp, showArchiveIcon: Boolean, navController: NavController) {
+fun MemoTerkirimActionButtons(width: Dp, showArchiveIcon: Boolean, navController: NavController) {
     val context = LocalContext.current
     Box(
         modifier = Modifier.width(width).wrapContentHeight().fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = {navController.navigate("detailMemoDiterima")}) {
+            IconButton(onClick = {navController.navigate("detailMemoTerkirim")}) {
                 Icon(
                     painter = painterResource(id = R.drawable.ikon_view),
                     contentDescription = "View",

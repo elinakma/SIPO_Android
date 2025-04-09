@@ -13,17 +13,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -31,54 +29,57 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sipo_reka.R
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 
 @Composable
-fun MemoDiterima(navController: NavController) {
+fun UndanganManager(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize().background(Color.White).padding(16.dp)
     ) {
-        MemoDiterimaTitle(navController)
+        UndanganManagerTitle(navController)
         Spacer(modifier = Modifier.height(20.dp))
-        MemoDiterimaSearch()
+        UndanganManagerSearch()
         Spacer(modifier = Modifier.height(10.dp))
-        MemoDiterimaFitur()
+        UndanganManagerFitur()
         Spacer(modifier = Modifier.height(15.dp))
-        MemoDiterimaTable(navController)
+        UndanganManagerTable(navController)
     }
 }
 
 @Composable
-fun MemoDiterimaTitle(navController: NavController) {
+fun UndanganManagerTitle(navController: NavController) {
     Column(
         modifier = Modifier.padding(top = 25.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -94,8 +95,8 @@ fun MemoDiterimaTitle(navController: NavController) {
                 )
             }
             Text(
-                text = "MEMO DITERIMA",
-                fontSize = 20.sp,
+                text = "UNDANGAN RAPAT MANAGER",
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
                 modifier = Modifier.weight(1f).align(Alignment.CenterVertically).padding(end = 40.dp),
@@ -106,7 +107,7 @@ fun MemoDiterimaTitle(navController: NavController) {
 }
 
 @Composable
-fun MemoDiterimaSearch() {
+fun UndanganManagerSearch() {
     var searchQuery by remember { mutableStateOf("") }
 
     Row(
@@ -149,7 +150,7 @@ fun MemoDiterimaSearch() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MemoDiterimaFitur() {
+fun UndanganManagerFitur() {
     var expanded by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val datePickerStateAwal = rememberDatePickerState()
@@ -226,8 +227,7 @@ fun MemoDiterimaFitur() {
                     textAlign = TextAlign.Center
                 )
                 IconButton(onClick = { showDatePickerAwal.value = true }) {
-                    Icon(
-                        Icons.Default.DateRange, contentDescription = "Tanggal",
+                    Icon(Icons.Default.DateRange, contentDescription = "Tanggal",
                         modifier = Modifier.width(13.dp).height(13.dp).padding(0.dp)
                     )
                 }
@@ -259,8 +259,7 @@ fun MemoDiterimaFitur() {
                     textAlign = TextAlign.Center
                 )
                 IconButton(onClick = { showDatePickerAkhir.value = true }) {
-                    Icon(
-                        Icons.Default.DateRange, contentDescription = "Tanggal",
+                    Icon(Icons.Default.DateRange, contentDescription = "Tanggal",
                         modifier = Modifier.width(13.dp).height(13.dp).padding(0.dp)
                     )
                 }
@@ -325,7 +324,7 @@ fun MemoDiterimaFitur() {
 }
 
 @Composable
-fun MemoDiterimaTable(navController: NavController) {
+fun UndanganManagerTable(navController: NavController) {
     val tableData = (1..20).map { index ->
         val status = when (index % 3) {
             0 -> "Disetujui"
@@ -334,7 +333,7 @@ fun MemoDiterimaTable(navController: NavController) {
         }
         listOf(
             index.toString(),
-            "Memo Monitoring Resiko Proyek $index",
+            "Undangan Rapat Kerja Kajian $index",
             "01-01-2024",
             "S-00$index",
             "5.5/REKA/GEN/QM & SHE (IT DAN K3)/III/2025",
@@ -346,7 +345,7 @@ fun MemoDiterimaTable(navController: NavController) {
     }
 
     val columnHeaders = listOf(
-        "No", "Nama Dokumen", "Tanggal Memo", "Seri", "Dokumen",
+        "No", "Nama Dokumen", "Tanggal Undangan", "Seri", "Dokumen",
         "Tanggal Disahkan", "Divisi", "Status", "Aksi"
     )
     val columnWidths = listOf(50.dp, 150.dp, 120.dp, 80.dp, 150.dp, 120.dp, 120.dp, 100.dp, 100.dp)
@@ -364,7 +363,7 @@ fun MemoDiterimaTable(navController: NavController) {
             // Header
             Row(Modifier.fillMaxWidth().background(Color.White)) {
                 columnHeaders.forEachIndexed { index, title ->
-                    MemoTableCell(text = title, width = columnWidths[index], isHeader = true)
+                    UndanganManagerTableCell(text = title, width = columnWidths[index], isHeader = true)
                 }
             }
 
@@ -382,18 +381,18 @@ fun MemoDiterimaTable(navController: NavController) {
                     rowData.forEachIndexed { index, value ->
                         when {
 //                            index == rowData.lastIndex -> {
-//                                DeleteButtonCell(width = columnWidths[index])
+//                                UndanganDeleteButtonCell(width = columnWidths[index])
 //                            }
                             index == rowData.lastIndex -> {
                                 val showArchiveIcon = rowData[7] == "Disetujui"
-                                MemoActionButtons(
+                                UndanganManagerActionButtons(
                                     width = columnWidths[index],
                                     showArchiveIcon = showArchiveIcon,
                                     navController = navController
                                 )
                             }
                             index == 7 -> {
-                                MemoTableCell(
+                                UndanganManagerTableCell(
                                     text = value,
                                     width = columnWidths[index],
                                     isHeader = false,
@@ -403,7 +402,7 @@ fun MemoDiterimaTable(navController: NavController) {
                             }
                             else -> {
                                 val textColor = if (index == 1) statusColor else Color.Black
-                                MemoTableCell(
+                                UndanganManagerTableCell(
                                     text = value,
                                     width = columnWidths[index],
                                     isHeader = false,
@@ -421,7 +420,7 @@ fun MemoDiterimaTable(navController: NavController) {
 }
 
 @Composable
-fun MemoTableCell(
+fun UndanganManagerTableCell(
     text: String,
     width: Dp,
     isHeader: Boolean,
@@ -478,7 +477,7 @@ fun MemoTableCell(
 }
 
 @Composable
-fun MemoDeleteButton(width: Dp) {
+fun UndanganManagerDeleteButtonCell(width: Dp) {
     Box(
         modifier = Modifier
             .width(width)
@@ -498,14 +497,14 @@ fun MemoDeleteButton(width: Dp) {
 }
 
 @Composable
-fun MemoActionButtons(width: Dp, showArchiveIcon: Boolean, navController: NavController) {
+fun UndanganManagerActionButtons(width: Dp, showArchiveIcon: Boolean, navController: NavController) {
     val context = LocalContext.current
     Box(
         modifier = Modifier.width(width).wrapContentHeight().fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = {navController.navigate("detailMemoDiterima")}) {
+            IconButton(onClick = {navController.navigate("detailUndanganManager")}) {
                 Icon(
                     painter = painterResource(id = R.drawable.ikon_view),
                     contentDescription = "View",

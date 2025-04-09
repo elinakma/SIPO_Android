@@ -56,7 +56,7 @@ import com.example.sipo_reka.R
 import com.example.sipo_reka.ui.screen.BottomNavBar
 
 @Composable
-fun DetailMemoDiterima(navController: NavHostController) {
+fun DetailUndanganManager(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,34 +66,28 @@ fun DetailMemoDiterima(navController: NavHostController) {
             .imePadding()
             .animateContentSize()
     ){
-        DetailMemoDiterimaTitle(navController)
+        DetailUndanganManagerTitle(navController)
         Spacer(modifier = Modifier.height(20.dp))
-        AgendaDetailMemoDiterimaFitur()
+        AgendaDetailUndanganManagerFitur()
         Spacer(modifier = Modifier.height(20.dp))
-        StatusDetailMemoDiterimaFitur()
+        StatusDetailUndanganManagerFitur()
         Spacer(modifier = Modifier.height(20.dp))
-        InformationDetailMemoDiterimaFitur()
+        InformationDetailUndanganManagerFitur()
         Spacer(modifier = Modifier.height(20.dp))
-        PengesahanDetailMemoDiterima()
-        Spacer(modifier = Modifier.height(20.dp))
-        TindakanDetailMemoDiterima()
-        Spacer(modifier = Modifier.height(20.dp))
-        CatatanDetailMemoDiterima()
-        Spacer(modifier = Modifier.height(20.dp))
-        ButtonAksiMemoDiterima()
+        PimpinanDetailUndanganManagerFitur()
         Spacer(modifier = Modifier.height(20.dp))
     }
 }
 
 
 @Composable
-fun DetailMemoDiterimaScreen(navController: NavHostController) {
+fun DetailUndanganManagerScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-        DetailMemoDiterima(navController)
+        DetailUndanganManager(navController)
 
         BottomNavBar(
             navController = navController,
@@ -105,7 +99,7 @@ fun DetailMemoDiterimaScreen(navController: NavHostController) {
 }
 
 @Composable
-fun DetailMemoDiterimaTitle(navController: NavHostController) {
+fun DetailUndanganManagerTitle(navController: NavHostController) {
     Column(
         modifier = Modifier.padding(top = 25.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -122,7 +116,7 @@ fun DetailMemoDiterimaTitle(navController: NavHostController) {
                 )
             }
             Text(
-                text = "DETAIL MEMO DITERIMA",
+                text = "DETAIL UNDANGAN RAPAT MANAGER",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
@@ -137,7 +131,7 @@ fun DetailMemoDiterimaTitle(navController: NavHostController) {
 }
 
 @Composable
-fun AgendaDetailMemoDiterimaFitur() {
+fun AgendaDetailUndanganManagerFitur() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -160,14 +154,14 @@ fun AgendaDetailMemoDiterimaFitur() {
 
         // Isi data
         Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            DetailRowMemoDiterima(label = "No Seri", value = "1")
-            DetailRowMemoDiterima(label = "Diterima", value = "")
+            DetailRowUndanganManager(label = "No Seri", value = "1")
+            DetailRowUndanganManager(label = "Diterima", value = "")
         }
     }
 }
 
 @Composable
-fun StatusDetailMemoDiterimaFitur() {
+fun StatusDetailUndanganManagerFitur() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -190,14 +184,14 @@ fun StatusDetailMemoDiterimaFitur() {
 
         // Isi data
         Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            DetailRowMemoDiterima(label = "Status", value = "Disetujui", isApproved = true)
-            DetailRowMemoDiterima(label = "Tanggal", value = "8 Januari 2025")
+            DetailRowUndanganManager(label = "Status", value = "Disetujui", isApproved = true)
+            DetailRowUndanganManager(label = "Tanggal", value = "8 Januari 2025")
         }
     }
 }
 
 @Composable
-fun InformationDetailMemoDiterimaFitur() {
+fun InformationDetailUndanganManagerFitur() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -225,19 +219,19 @@ fun InformationDetailMemoDiterimaFitur() {
 
         // Isi data
         Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            DetailRowMemoDiterima(label = "No Surat", value = "2.2/REKA/GEN/HR & GA/II/2025")
-            DetailRowMemoDiterima(label = "Seri Surat", value = "2")
-            DetailRowMemoDiterima(label = "Perihal", value = "Memo Monitoring Risiko")
-            DetailRowMemoDiterima(label = "Tanggal", value = "8 Januari 2025")
-            DetailRowMemoDiterima(label = "Kepada", value = "Manager Divisi Logistik")
-            DetailRowFileMemoDiterima()
+            DetailRowUndanganManager(label = "No Surat", value = "2.2/REKA/GEN/HR & GA/II/2025")
+            DetailRowUndanganManager(label = "Seri Surat", value = "2")
+            DetailRowUndanganManager(label = "Perihal", value = "Undangan Rapat Kajian")
+            DetailRowUndanganManager(label = "Tanggal", value = "8 Januari 2025")
+            DetailRowUndanganManager(label = "Kepada", value = "Manager Divisi Logistik")
+            DetailRowFileUndanganManager()
             Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }
 
 @Composable
-fun DetailRowMemoDiterima(label: String, value: String, isApproved: Boolean = false) {
+fun DetailRowUndanganManager(label: String, value: String, isApproved: Boolean = false) {
     val backgroundColor = when (value) {
         "Disetujui" -> Color(0xFF4CAF50)
         "Diproses" -> Color(0xFFFFA000)
@@ -301,7 +295,7 @@ fun DetailRowMemoDiterima(label: String, value: String, isApproved: Boolean = fa
 
 
 @Composable
-fun DetailRowFileMemoDiterima() {
+fun DetailRowFileUndanganManager() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -352,10 +346,7 @@ fun DetailRowFileMemoDiterima() {
 }
 
 @Composable
-fun PengesahanDetailMemoDiterima() {
-    var selectedOption by remember { mutableStateOf("Diterima") }
-    val options = listOf("Diterima", "Ditolak", "Dikoreksi")
-
+fun PimpinanDetailUndanganManagerFitur() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -370,206 +361,20 @@ fun PengesahanDetailMemoDiterima() {
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                "Pengesahan",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = Color(0xFF1E4178)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Radio Button Input
-        Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            options.forEach { option ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp)
-                        .clickable { selectedOption = option }
-                ) {
-                    RadioButton(
-                        selected = selectedOption == option,
-                        onClick = { selectedOption = option },
-                        colors = RadioButtonDefaults.colors(
-                            selectedColor = Color(0xFF1E4178)
-                        )
-                    )
-                    Text(
-                        text = option,
-                        fontSize = 14.sp,
-                        color = Color.Black
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun TindakanDetailMemoDiterima() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .border(1.dp, Color(0xFFEFF4FA), RoundedCornerShape(8.dp))
-    ) {
-        // Header
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFFB3D5F7))
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text("Tindakan Selanjutnya", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color(0xFF1E4178))
-        }
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        // Isi data
-        Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            DropdownTindakanMemoAdmin(value = "", items = listOf("Koreksi Kembali", "Dilanjutkan"))
-            Spacer(modifier = Modifier.height(10.dp))
-        }
-    }
-}
-
-@Composable
-fun DropdownTindakanMemoAdmin(value: String, items: List<String>) {
-    var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(value) }
-
-    Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(1.dp, Color(0xFFEEEEEE), shape = RoundedCornerShape(4.dp))
-                .padding(horizontal = 12.dp, vertical = 6.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = if (selectedText.isEmpty()) "-- Pilih Tindakan --" else selectedText,
-                fontSize = 14.sp,
-                color = if (selectedText.isEmpty()) Color.Gray else Color.Black,
-                modifier = Modifier.weight(1f)
-            )
-            IconButton(onClick = { expanded = !expanded }) {
-                Icon(Icons.Default.ArrowDropDown, contentDescription = "Dropdown")
-            }
-
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                offset = DpOffset(x = 200.dp, y = 0.dp), // agar overlay dropdown item menu di kanan
-                modifier = Modifier.background(color = Color.White)
-            ) {
-                items.forEach { item ->
-                    DropdownMenuItem(
-                        text = { Text(item, color = Color.Black) },
-                        onClick = {
-                            selectedText = item
-                            expanded = false
-                        }
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun CatatanDetailMemoDiterima() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .border(1.dp, Color(0xFFEFF4FA), RoundedCornerShape(8.dp))
-    ) {
-        // Header
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFFB3D5F7))
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text("Catatan", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color(0xFF1E4178))
-        }
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        // Isi data
-        Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            CatatanValueMemoAdmin()
-            Spacer(modifier = Modifier.height(10.dp))
-        }
-    }
-}
-
-@Composable
-fun CatatanValueMemoAdmin() {
-    var catatan by remember { mutableStateOf("") }
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .border(1.dp, Color(0xFFEEEEEE), shape = RoundedCornerShape(4.dp))
-            .padding(horizontal = 12.dp, vertical = 8.dp)
-    ) {
-        if (catatan.isEmpty()) {
-            Text(
-                text = "-- Tulis catatan di sini --",
-                fontSize = 14.sp,
-                color = Color.Gray
-            )
-        }
-        BasicTextField(
-            value = catatan,
-            onValueChange = { catatan = it },
-            textStyle = TextStyle(fontSize = 14.sp, color = Color.Black),
-            modifier = Modifier.fillMaxWidth()
+            Icon(
+            painter = painterResource(id = R.drawable.detail_memo1),
+            contentDescription = "Informasi",
+            tint = Color(0xFF1E4178)
         )
-    }
-}
-
-@Composable
-fun ButtonAksiMemoDiterima() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp),
-        horizontalArrangement = Arrangement.End
-    ) {
-        // Tombol Batal
-        Button(
-            onClick = { /* Aksi batal */ },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
-            shape = RoundedCornerShape(6.dp),
-            modifier = Modifier
-                .width(80.dp)
-                .height(30.dp),
-                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
-        ) {
-            Text(text = "Batal", color = Color.Black)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Informasi Pimpinan", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color(0xFF1E4178))
         }
 
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
-        // Tombol Kirim
-        Button(
-            onClick = { /* Aksi kirim */ },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D47A1)),
-            shape = RoundedCornerShape(6.dp),
-            modifier = Modifier
-                .width(80.dp)
-                .height(30.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
-        ) {
-            Text(text = "Kirim", color = Color.White)
+        // Isi data
+        Column(modifier = Modifier.padding(horizontal = 12.dp)) {
+            DetailRowUndanganManager(label = "Pengesahan", value = "Disetujui", isApproved = true)
         }
     }
 }

@@ -314,9 +314,9 @@ fun DashboardMenuManager(navController: NavController) {
 
             // isi dari menu card
             val menuItems = listOf(
-                Triple("Memo", R.drawable.menu_memo, "memo_screen"),
-                Triple("Risalah Rapat", R.drawable.menu_risalah, "risalah_screen"),
-                Triple("Undangan Rapat", R.drawable.menu_undangan, "undangan_screen"),
+                Triple("Memo", R.drawable.menu_memo, "memoManager"),
+                Triple("Risalah Rapat", R.drawable.menu_risalah, "risalahManager"),
+                Triple("Undangan Rapat", R.drawable.menu_undangan, "undanganManager"),
                 Triple("Data Perusahaan", R.drawable.menu_data, "dataPerusahaan"),
                 Triple("Info1", R.drawable.menu_info, "detailMemo"),
             )

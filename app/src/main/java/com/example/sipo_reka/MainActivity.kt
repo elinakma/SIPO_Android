@@ -36,6 +36,13 @@ import com.example.sipo_reka.ui.manager.DashboardsManager
 import com.example.sipo_reka.ui.manager.MemoDiterima
 import com.example.sipo_reka.ui.manager.DetailMemoDiterima
 import com.example.sipo_reka.ui.manager.DetailMemoDiterimaScreen
+import com.example.sipo_reka.ui.manager.DetailMemoTerkirimScreen
+import com.example.sipo_reka.ui.manager.DetailRisalahManager
+import com.example.sipo_reka.ui.manager.DetailUndanganManager
+import com.example.sipo_reka.ui.manager.MemoManager
+import com.example.sipo_reka.ui.manager.MemoTerkirim
+import com.example.sipo_reka.ui.manager.RisalahManager
+import com.example.sipo_reka.ui.manager.UndanganManager
 import com.example.sipo_reka.ui.screen.DataPerusahaanScreen
 import com.example.sipo_reka.ui.screen.NewPassword
 import com.example.sipo_reka.ui.screen.ProfilesScreen
@@ -103,7 +110,6 @@ fun AppNavigator(navController: NavHostController) {
         composable("detailRisalah") { DetailRisalahScreen(navController) }
         composable("detailMemoAdmin") { DetailMemoAdminScreen(navController) }
         composable("kirimMemoAdmin") { KirimMemoAdminScreen(navController) }
-        composable("detailMemoDiterima") { DetailMemoDiterimaScreen(navController) }
 
         // Superadmin
         composable("memo_screen") { MemoSuperadmin(navController) }
@@ -119,7 +125,15 @@ fun AppNavigator(navController: NavHostController) {
 
         // Manager
         composable("dashboardManager") { DashboardsManager(navController)}
-        composable("memo_diterima") { MemoDiterima(navController) }
+        composable("memoManager") { MemoManager(navController) }
+        composable("memoDiterima") { MemoDiterima(navController) }
+        composable("memoTerkirim") { MemoTerkirim(navController) }
+        composable("detailMemoDiterima") { DetailMemoDiterimaScreen(navController) }
+        composable("detailMemoTerkirim") { DetailMemoTerkirimScreen(navController) }
+        composable("undanganManager") { UndanganManager(navController) }
+        composable("detailUndanganManager") { DetailUndanganManager(navController) }
+        composable("risalahManager") { RisalahManager(navController) }
+        composable("detailRisalahManager") { DetailRisalahManager(navController) }
 
         // Admin
         composable("dashboardAdmin") { DashboardsAdmin(navController) }
