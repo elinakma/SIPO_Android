@@ -124,7 +124,7 @@ fun DashboardHeader(navController: NavController) {
                 contentDescription = "Profile Icon",
                 modifier = Modifier.size(40.dp)
                     .clickable {
-                        navController.navigate("profile_screen")
+                        navController.navigate("profile")
                     },
                 tint = Color.Unspecified // Ubah warna ikon sesuai desain
             )
