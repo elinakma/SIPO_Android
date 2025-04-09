@@ -90,7 +90,7 @@ fun DetailMemoTerkirimTitle(navController: NavHostController) {
                 )
             }
             Text(
-                text = "DETAIL MEMO",
+                text = "DETAIL MEMO TERKIRIM",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,

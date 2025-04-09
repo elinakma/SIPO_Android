@@ -23,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sipo_reka.ui.screen.ForgotPassword
 import androidx.navigation.NavHostController
 import com.example.sipo_reka.ui.admin.DashboardAdmin
+import com.example.sipo_reka.ui.admin.DashboardsAdmin
 import com.example.sipo_reka.ui.admin.DetailMemoAdminScreen
 import com.example.sipo_reka.ui.admin.KirimMemoAdminScreen
 import com.example.sipo_reka.ui.admin.MemoAdmin
@@ -31,6 +32,7 @@ import com.example.sipo_reka.ui.arsip.MemoArsip
 import com.example.sipo_reka.ui.arsip.RisalahArsip
 import com.example.sipo_reka.ui.arsip.UndanganArsip
 import com.example.sipo_reka.ui.manager.DashboardManager
+import com.example.sipo_reka.ui.manager.DashboardsManager
 import com.example.sipo_reka.ui.manager.MemoDiterima
 import com.example.sipo_reka.ui.manager.DetailMemoDiterima
 import com.example.sipo_reka.ui.manager.DetailMemoDiterimaScreen
@@ -116,11 +118,11 @@ fun AppNavigator(navController: NavHostController) {
         composable("risalahArsip") { RisalahArsip(navController) }
 
         // Manager
-        composable("dashboardManager") { DashboardManager(navController)}
+        composable("dashboardManager") { DashboardsManager(navController)}
         composable("memo_diterima") { MemoDiterima(navController) }
 
         // Admin
-        composable("dashboardAdmin") { DashboardAdmin(navController) }
+        composable("dashboardAdmin") { DashboardsAdmin(navController) }
         composable("memoAdmin") { MemoAdmin(navController) }
 
         composable("sementara") { Sementara(navController) }
