@@ -22,7 +22,9 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -59,7 +61,7 @@ fun UndanganArsip(navController: NavController) {
         Spacer(modifier = Modifier.height(20.dp))
         UndanganSearchArsip()
         Spacer(modifier = Modifier.height(10.dp))
-        UndanganTableArsip()
+        UndanganTableArsip(navController)
     }
 }
 
@@ -134,7 +136,7 @@ fun UndanganSearchArsip() {
 }
 
 @Composable
-fun UndanganTableArsip() {
+fun UndanganTableArsip(navController: NavController) {
     val tableData = (1..20).map { index ->
         val status = when (index % 3) {
             0 -> "Disetujui"
@@ -158,7 +160,7 @@ fun UndanganTableArsip() {
         "No", "Nama Dokumen", "Tanggal Undangan", "Seri", "Dokumen",
         "Tanggal Disahkan", "Divisi", "Status", "Aksi"
     )
-    val columnWidths = listOf(50.dp, 150.dp, 120.dp, 80.dp, 150.dp, 120.dp, 120.dp, 100.dp, 100.dp)
+    val columnWidths = listOf(50.dp, 150.dp, 120.dp, 80.dp, 150.dp, 120.dp, 120.dp, 100.dp, 150.dp)
 
     val scrollStateHorizontal = rememberScrollState()
     val scrollStateVertical = rememberScrollState()
@@ -191,7 +193,13 @@ fun UndanganTableArsip() {
                     rowData.forEachIndexed { index, value ->
                         when {
                             index == rowData.lastIndex -> {
-                                UndanganDeleteButton(width = columnWidths[index])
+//                                UndanganDeleteButton(width = columnWidths[index])
+                                val showArchiveIcon = rowData[7] == "Disetujui"
+                                UndanganArsipActionButtons(
+                                    width = columnWidths[index],
+                                    showArchiveIcon = showArchiveIcon,
+                                    navController = navController
+                                )
                             }
                             index == 7 -> {
                                 UndanganTableCell(
@@ -294,6 +302,45 @@ fun UndanganDeleteButton(width: Dp) {
                 tint = Color.Red, // Warna ikon hapus
                 modifier = Modifier.size(20.dp) // Ukuran ikon
             )
+        }
+    }
+}
+
+@Composable
+fun UndanganArsipActionButtons(width: Dp, showArchiveIcon: Boolean, navController: NavController) {
+    val context = LocalContext.current
+    Box(
+        modifier = Modifier.width(width).wrapContentHeight().fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = {navController.navigate("kirimMemoAdmin")
+            }) {
+                Icon(
+//                    painter = painterResource(id = R.drawable.ikon_share),
+                    imageVector = Icons.Default.Download,
+                    contentDescription = "Kirim",
+                    tint = Color(0xFF5D5FEF),
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+            IconButton(onClick = { /* Tambahkan aksi hapus di sini */ }) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Hapus",
+                    tint = Color.Red,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+            IconButton(onClick = {navController.navigate("detailMemoAdmin")}) {
+                Icon(
+//                    painter = painterResource(id = R.drawable.ikon_view),
+                    imageVector = Icons.Default.Visibility,
+                    contentDescription = "View",
+                    tint = Color(0xFF0095FF),
+                    modifier = Modifier.size(20.dp)
+                )
+            }
         }
     }
 }

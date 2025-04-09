@@ -68,6 +68,7 @@ fun KirimRisalahAdmin(navController: NavHostController) {
         Spacer(modifier = Modifier.height(30.dp))
         TindakanKirimRisalahAdmin()
         Spacer(modifier = Modifier.height(20.dp))
+        ButtonAksiRisalahAdmin()
     }
 }
 
@@ -398,3 +399,40 @@ fun DropdownTindakanRisalahAdmin(label: String, value: String, items: List<Strin
     }
 }
 
+@Composable
+fun ButtonAksiRisalahAdmin() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp),
+        horizontalArrangement = Arrangement.End
+    ) {
+        // Tombol Batal
+        Button(
+            onClick = { /* Aksi batal */ },
+            colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
+            shape = RoundedCornerShape(6.dp),
+            modifier = Modifier
+                .width(80.dp)
+                .height(30.dp),
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+        ) {
+            Text(text = "Batal", color = Color.Black)
+        }
+
+        Spacer(modifier = Modifier.width(10.dp))
+
+        // Tombol Kirim
+        Button(
+            onClick = { /* Aksi kirim */ },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D47A1)),
+            shape = RoundedCornerShape(6.dp),
+            modifier = Modifier
+                .width(80.dp)
+                .height(30.dp),
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+        ) {
+            Text(text = "Kirim", color = Color.White)
+        }
+    }
+}
