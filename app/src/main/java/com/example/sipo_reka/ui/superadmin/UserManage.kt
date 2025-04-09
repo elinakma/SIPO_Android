@@ -1,8 +1,5 @@
 package com.example.sipo_reka.ui.superadmin
 
-import android.os.UserManager
-import android.widget.Space
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
@@ -18,27 +15,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,13 +44,11 @@ import androidx.navigation.NavController
 import com.example.sipo_reka.R
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.ui.unit.Dp
 
 @Composable
 fun UserManage(navController: NavController) {
@@ -97,8 +85,8 @@ fun UserManageTitle(navController: NavController) {
                 )
             }
             Text(
-                text = "Manajemen Pengguna",
-                fontSize = 20.sp,
+                text = "MANAJEMEN PENGGUNA",
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
                 modifier = Modifier
@@ -119,7 +107,7 @@ fun UserManageFitur() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box() {
@@ -187,7 +175,7 @@ fun UserManageFitur() {
             modifier = Modifier
                 .border(1.dp, Color(0xFFE5E5E5), RoundedCornerShape(5.dp))
                 .width(250.dp)
-                .height(35.dp), // Sedikit diperbesar untuk memberi ruang ke teks
+                .height(35.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White)
         ) {
             Row(
@@ -214,6 +202,19 @@ fun UserManageFitur() {
                         .weight(1f)
                         .fillMaxHeight()
                 )
+
+                // Tampilkan ikon Clear jika searchQuery tidak kosong
+                if (searchQuery.isNotEmpty()) {
+                    IconButton(
+                        onClick = { searchQuery = "" } // Kosongkan input saat diklik
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close, // Ganti dengan ikon silang
+                            contentDescription = "Clear",
+                            tint = Color.Gray
+                        )
+                    }
+                }
             }
         }
 
@@ -243,33 +244,33 @@ fun UserManageTable() {
                     modifier = Modifier
                         .background(Color(0xFFEFF4FA))
                         .padding(8.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TableHeader("Nama")
-                    TableHeader("Email")
-                    TableHeader("Izin Akses")
-                    TableHeader("Divisi")
-                    TableHeader("Posisi")
-                    TableHeader("No. Telp")
-                    TableHeader("Aksi")
+                    TableHeader("Nama / Email", 180.dp)
+                    TableHeader("Izin Akses", 150.dp)
+                    TableHeader("Divisi", 100.dp)
+                    TableHeader("Posisi", 150.dp)
+                    TableHeader("No. Telp", 150.dp)
+                    TableHeader("Aksi", 80.dp)
                 }
 
                 // Table Body
                 LazyColumn {
-                    items(users) { user ->
+                    itemsIndexed(users) { index, user ->
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            TableCell(user.name)
-                            TableCell(user.email)
-                            TableCell(user.accessLevel)
-                            TableCell(user.division)
-                            TableCell(user.position)
-                            TableCell(user.phone)
-                            TableCell("Edit | Delete")
+                            TableCellWithImage(user.name, user.email)
+                            TableCell(user.accessLevel, 150.dp)
+                            TableCell(user.division, 100.dp)
+                            TableCell(user.position, 150.dp)
+                            TableCell(user.phone, 150.dp)
+                            TableCellWithActions()
                         }
                     }
                 }
@@ -279,7 +280,52 @@ fun UserManageTable() {
 }
 
 @Composable
-fun TableHeader(text: String) {
+fun TableCellWithImage(name: String, email: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .width(180.dp) // Lebar lebih besar agar cukup dengan gambar
+            .padding(8.dp)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.profile_user),
+            contentDescription = "Profile Picture",
+            modifier = Modifier
+                .size(40.dp) // Ukuran gambar
+                .padding(end = 8.dp)
+        )
+        Column {
+            Text(
+                text = name,
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Start
+            )
+            Text(
+                text = email,
+                fontSize = 12.sp,
+                color = Color.Gray,
+                textAlign = TextAlign.Start
+            )
+        }
+    }
+}
+
+@Composable
+fun TableCellWithActions() {
+    Row(
+        modifier = Modifier.width(80.dp),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        IconButton(onClick = { /* TODO: Implement Delete action */ }) {
+            Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete", tint = Color.Red)
+        }
+    }
+}
+
+
+@Composable
+fun TableHeader(text: String, width: Dp) {
     Text(
         text = text,
         fontSize = 16.sp,
@@ -287,20 +333,59 @@ fun TableHeader(text: String) {
         fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Center,
         modifier = Modifier
-            .width(150.dp)
+            .width(width)
             .padding(8.dp)
     )
 }
 
 @Composable
-fun TableCell(text: String) {
-    Text(
-        text = text,
-        fontSize = 14.sp,
-        modifier = Modifier
-            .width(150.dp)
-            .padding(8.dp)
-    )
+fun TableCell(text: String, width: Dp) {
+    val borderColor = when (text) {
+        "Admin" -> Color(0xFF0095FF)
+        "Supervisor" -> Color(0xFF5D5FEF)
+        "Superadmin" -> Color(0xFF3E58C0)
+        else -> Color.Transparent
+    }
+
+    val backgroundColor = when (text) {
+        "Admin" -> Color(0xFF0095FF)
+        "Supervisor" -> Color(0xFF5D5FEF)
+        "Superadmin" -> Color(0xFF3E58C0)
+        else -> Color.Transparent
+    }
+
+    val borderWidth = width * 0.7f
+
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.width(width)
+    ) {
+        if (borderColor != Color.Transparent) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .width(borderWidth)
+                    .background(backgroundColor, RoundedCornerShape(8.dp))
+                    .border(1.dp, borderColor, RoundedCornerShape(8.dp))
+                    .padding(vertical = 2.dp)
+            ) {
+                Text(
+                    text = text,
+                    fontSize = 13.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        } else {
+            Text(
+                text = text,
+                fontSize = 13.sp,
+                textAlign = TextAlign.Center,
+                color = Color.Black
+            )
+        }
+    }
 }
 
 data class User(
