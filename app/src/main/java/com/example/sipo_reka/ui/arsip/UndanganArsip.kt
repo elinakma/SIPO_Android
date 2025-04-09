@@ -314,8 +314,7 @@ fun UndanganArsipActionButtons(width: Dp, showArchiveIcon: Boolean, navControlle
         contentAlignment = Alignment.Center
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = {navController.navigate("kirimMemoAdmin")
-            }) {
+            IconButton(onClick = {/* Tambahkan aksi hapus di sini */ }) {
                 Icon(
 //                    painter = painterResource(id = R.drawable.ikon_share),
                     imageVector = Icons.Default.Download,
