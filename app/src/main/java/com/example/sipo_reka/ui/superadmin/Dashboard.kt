@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,6 +41,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.navigation.NavController
+import com.example.sipo_reka.ui.screen.BottomNavBar
 
 // mengatur panjang setiap function dalam dashboard
 @Composable
@@ -50,7 +52,7 @@ fun DashboardScreen(navController: NavController) {
             .background(Color.White)
             .padding(16.dp)
     ) {
-        DashboardHeader()
+        DashboardHeader(navController)
         Spacer(modifier = Modifier.height(0.dp))
         DashboardBanner()
         Spacer(modifier = Modifier.height(15.dp))
@@ -62,7 +64,25 @@ fun DashboardScreen(navController: NavController) {
 }
 
 @Composable
-fun DashboardHeader() {
+fun DashboardsScreen(navController: NavController) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+        DashboardScreen(navController)
+
+        BottomNavBar(
+            navController = navController,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 15.dp)
+        )
+    }
+}
+
+@Composable
+fun DashboardHeader(navController: NavController) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -82,12 +102,14 @@ fun DashboardHeader() {
             ) {
                 Text(
                     text = "Mawar",
+                    color = Color.Black,
                     fontWeight = FontWeight.Bold,
                     fontSize = 12.sp,
                     modifier = Modifier.align(Alignment.End)
                 )
                 Text(
                     text = "Super Admin",
+                    color = Color.Black,
                     fontWeight = FontWeight.Bold,
                     fontSize = 12.sp,
                     lineHeight = 15.sp,
@@ -100,7 +122,10 @@ fun DashboardHeader() {
             Icon(
                 painter = painterResource(id = R.drawable.icon_profile),
                 contentDescription = "Profile Icon",
-                modifier = Modifier.size(40.dp),
+                modifier = Modifier.size(40.dp)
+                    .clickable {
+                        navController.navigate("profile")
+                    },
                 tint = Color.Unspecified // Ubah warna ikon sesuai desain
             )
         }
@@ -180,11 +205,13 @@ fun DashboardOverview() {
         ) {
             Text(
                 text = "Tinjauan",
+                color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 fontSize = 12.sp
             )
             Text(
                 text = "Tinjau aktivitas dan jumlah surat.",
+                color = Color.Black,
                 fontSize = 10.sp,
                 lineHeight = 14.sp
             )
@@ -220,6 +247,7 @@ fun OverviewCard(title: String, count: String, icon: Int) {
         ) {
             Text(
                 text = title,
+                color = Color.Black,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
                 lineHeight = 15.sp,
@@ -270,12 +298,14 @@ fun DashboardMenu(navController: NavController) {
         ) {
             Text(
                 text = "Menu",
+                color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(start = 8.dp, top = 20.dp)
             )
             Text(
                 text = "Gunakan menu ini untuk mengelola informasi persuratan.",
+                color = Color.Black,
                 fontSize = 12.sp,
                 modifier = Modifier.padding(start = 8.dp),
                 lineHeight = 18.sp
@@ -291,8 +321,12 @@ fun DashboardMenu(navController: NavController) {
                 Triple("Arsip", R.drawable.menu_arsip, "arsip_screen"),
                 Triple("Laporan", R.drawable.menu_laporan, "laporan_screen"),
                 Triple("Manajemen Pengguna", R.drawable.menu_user, "user_management_screen"),
-                Triple("Data Perusahaan", R.drawable.menu_data, "company_data_screen"),
-                Triple("Info", R.drawable.menu_info, "info_screen")
+                Triple("Data Perusahaan", R.drawable.menu_data, "dataPerusahaan"),
+                Triple("Info1", R.drawable.menu_info, "detailMemo"),
+                Triple("Info2", R.drawable.menu_info, "detailUndangan"),
+                Triple("Info3", R.drawable.menu_info, "detailRisalah"),
+                Triple("Info4", R.drawable.menu_info, "detailMemoAdmin"),
+                Triple("Info5", R.drawable.menu_info, "kirimMemoAdmin")
 
             )
 
@@ -311,7 +345,6 @@ fun DashboardMenu(navController: NavController) {
 
 // untuk mengatur menuItems
 @Composable
-//fun MenuCard(title: String, icon: Int) {
 fun MenuCard(title: String, icon: Int, route: String, navController: NavController) {
     Column(
         modifier = Modifier
@@ -327,6 +360,7 @@ fun MenuCard(title: String, icon: Int, route: String, navController: NavControll
         )
         Text(
             text = title,
+            color = Color.Black,
             fontSize = 9.sp,
             textAlign = TextAlign.Center,
             lineHeight = 15.sp,
