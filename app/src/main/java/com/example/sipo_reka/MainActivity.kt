@@ -25,8 +25,17 @@ import androidx.navigation.NavHostController
 import com.example.sipo_reka.ui.admin.DashboardAdmin
 import com.example.sipo_reka.ui.admin.DashboardsAdmin
 import com.example.sipo_reka.ui.admin.DetailMemoAdminScreen
+import com.example.sipo_reka.ui.admin.DetailRisalahAdmin
+import com.example.sipo_reka.ui.admin.DetailRisalahAdminScreen
+import com.example.sipo_reka.ui.admin.DetailUndanganAdminScreen
 import com.example.sipo_reka.ui.admin.KirimMemoAdminScreen
+import com.example.sipo_reka.ui.admin.KirimRisalahAdmin
+import com.example.sipo_reka.ui.admin.KirimRisalahAdminScreen
+import com.example.sipo_reka.ui.admin.KirimUndanganAdmin
+import com.example.sipo_reka.ui.admin.KirimUndanganAdminScreen
 import com.example.sipo_reka.ui.admin.MemoAdmin
+import com.example.sipo_reka.ui.admin.RisalahAdmin
+import com.example.sipo_reka.ui.admin.UndanganAdmin
 import com.example.sipo_reka.ui.arsip.Arsip
 import com.example.sipo_reka.ui.arsip.MemoArsip
 import com.example.sipo_reka.ui.arsip.RisalahArsip
@@ -108,8 +117,7 @@ fun AppNavigator(navController: NavHostController) {
         // SEMENTARA
         composable("detailUndangan") { DetailUndanganScreen(navController) }
         composable("detailRisalah") { DetailRisalahScreen(navController) }
-        composable("detailMemoAdmin") { DetailMemoAdminScreen(navController) }
-        composable("kirimMemoAdmin") { KirimMemoAdminScreen(navController) }
+        composable("detailMemoDiterima") { DetailMemoDiterimaScreen(navController) }
 
         // Superadmin
         composable("memo_screen") { MemoSuperadmin(navController) }
@@ -137,7 +145,18 @@ fun AppNavigator(navController: NavHostController) {
 
         // Admin
         composable("dashboardAdmin") { DashboardsAdmin(navController) }
+        // Memo
         composable("memoAdmin") { MemoAdmin(navController) }
+        composable("detailMemoAdmin") { DetailMemoAdminScreen(navController) }
+        composable("kirimMemoAdmin") { KirimMemoAdminScreen(navController) }
+        // Undangan
+        composable("undanganAdmin") { UndanganAdmin(navController) }
+        composable("detailUndanganAdmin") { DetailUndanganAdminScreen(navController) }
+        composable("kirimUndanganAdmin") { KirimUndanganAdminScreen(navController) }
+        // Risalah
+        composable("risalahAdmin") { RisalahAdmin(navController) }
+        composable("detailRisalahAdmin") { DetailRisalahAdminScreen(navController) }
+        composable("kirimRisalahAdmin") { KirimRisalahAdminScreen(navController) }
 
         composable("sementara") { Sementara(navController) }
     }

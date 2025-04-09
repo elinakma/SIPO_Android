@@ -21,7 +21,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -45,12 +44,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.sipo_reka.R
 import com.example.sipo_reka.ui.screen.BottomNavBar
 
 @Composable
-fun KirimMemoAdmin(navController: NavHostController) {
+fun KirimUndanganAdmin(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -60,26 +60,26 @@ fun KirimMemoAdmin(navController: NavHostController) {
             .imePadding()
             .animateContentSize()
     ){
-        KirimMemoAdminTitle(navController)
+        KirimUndanganAdminTitle(navController)
         Spacer(modifier = Modifier.height(20.dp))
-        InformationKirimMemoAdminFitur()
+        InformationKirimUndanganAdminFitur()
         Spacer(modifier = Modifier.height(30.dp))
-        KirimMemoAdminFitur()
+        KirimUndanganAdminFitur()
         Spacer(modifier = Modifier.height(30.dp))
-        TindakanKirimMemoAdmin()
+        TindakanKirimUndanganAdmin()
         Spacer(modifier = Modifier.height(20.dp))
-        ButtonAksiMemoAdmin()
+        ButtonAksiUndanganAdmin()
     }
 }
 
 @Composable
-fun KirimMemoAdminScreen(navController: NavHostController) {
+fun KirimUndanganAdminScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-        KirimMemoAdmin(navController)
+        KirimUndanganAdmin(navController)
 
         BottomNavBar(
             navController = navController,
@@ -91,7 +91,7 @@ fun KirimMemoAdminScreen(navController: NavHostController) {
 }
 
 @Composable
-fun KirimMemoAdminTitle(navController: NavHostController) {
+fun KirimUndanganAdminTitle(navController: NavController) {
     Column(
         modifier = Modifier.padding(top = 25.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -108,7 +108,7 @@ fun KirimMemoAdminTitle(navController: NavHostController) {
                 )
             }
             Text(
-                text = "KIRIM MEMO",
+                text = "KIRIM UNDANGAN RAPAT",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
@@ -123,7 +123,7 @@ fun KirimMemoAdminTitle(navController: NavHostController) {
 }
 
 @Composable
-fun InformationKirimMemoAdminFitur() {
+fun InformationKirimUndanganAdminFitur() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -144,24 +144,24 @@ fun InformationKirimMemoAdminFitur() {
                 tint = Color(0xFF1E4178)
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Informasi Detail Memo", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color(0xFF1E4178))
+            Text("Informasi Detail Undangan Rapat", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color(0xFF1E4178))
         }
 
         Spacer(modifier = Modifier.height(10.dp))
 
         // Isi data
         Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            KirimRowMemoAdmin(label = "No Surat", value = "2.2/REKA/GEN/HR & GA/II/2025")
-            KirimRowMemoAdmin(label = "Seri Surat", value = "2")
-            KirimRowMemoAdmin(label = "Perihal", value = "Memo Monitoring Risiko")
-            KirimRowMemoAdmin(label = "Tanggal", value = "8 Januari 2025")
-            KirimRowMemoAdmin(label = "Kepada", value = "Manager Divisi Logistik")
+            KirimRowUndanganAdmin(label = "No Surat", value = "2.2/REKA/GEN/HR & GA/II/2025")
+            KirimRowUndanganAdmin(label = "Seri Surat", value = "2")
+            KirimRowUndanganAdmin(label = "Perihal", value = "Undangan Rapat Kajian")
+            KirimRowUndanganAdmin(label = "Tanggal", value = "8 Januari 2025")
+            KirimRowUndanganAdmin(label = "Kepada", value = "Manager Divisi Logistik")
         }
     }
 }
 
 @Composable
-fun KirimMemoAdminFitur() {
+fun KirimUndanganAdminFitur() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -189,16 +189,16 @@ fun KirimMemoAdminFitur() {
 
         // Isi data
         Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            KirimRowMemoAdmin(label = "Pembuat", value = "Admin Logistik")
-            KirimRowMemoAdmin(label = "Status", value = "Disetujui", isApproved = true)
-            KirimRowFileMemoAdmin()
+            KirimRowUndanganAdmin(label = "Pembuat", value = "Admin Logistik")
+            KirimRowUndanganAdmin(label = "Status", value = "Disetujui", isApproved = true)
+            KirimRowFileUndanganAdmin()
             Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }
 
 @Composable
-fun KirimRowMemoAdmin(label: String, value: String, isApproved: Boolean = false) {
+fun KirimRowUndanganAdmin(label: String, value: String, isApproved: Boolean = false) {
     val backgroundColor = when (value) {
         "Disetujui" -> Color(0xFF4CAF50)
         "Diproses" -> Color(0xFFFFA000)
@@ -261,7 +261,7 @@ fun KirimRowMemoAdmin(label: String, value: String, isApproved: Boolean = false)
 }
 
 @Composable
-fun KirimRowFileMemoAdmin() {
+fun KirimRowFileUndanganAdmin() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -312,7 +312,7 @@ fun KirimRowFileMemoAdmin() {
 }
 
 @Composable
-fun TindakanKirimMemoAdmin() {
+fun TindakanKirimUndanganAdmin() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -334,16 +334,16 @@ fun TindakanKirimMemoAdmin() {
 
         // Isi data
         Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            DropdownTindakanMemoAdmin(label = "Posisi Penerima", value = "", items = listOf("Admin Divisi", "Manager"))
+            DropdownTindakanUndanganAdmin(label = "Posisi Penerima", value = "", items = listOf("Admin Divisi", "Manager"))
             Spacer(modifier = Modifier.height(10.dp))
-            DropdownTindakanMemoAdmin(label = "Divisi Penerima", value = "", items = listOf("HR & GA", "Keuangan", "Logistik $ Gudang", "Pemasaran", "Sekretaris Perusahaan", "MRH", "Teknologi", "Quality Control", "QM & SHE", "PPC"))
+            DropdownTindakanUndanganAdmin(label = "Divisi Penerima", value = "", items = listOf("HR & GA", "Keuangan", "Logistik $ Gudang", "Pemasaran", "Sekretaris Perusahaan", "MRH", "Teknologi", "Quality Control", "QM & SHE", "PPC"))
             Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }
 
 @Composable
-fun DropdownTindakanMemoAdmin(label: String, value: String, items: List<String>) {
+fun DropdownTindakanUndanganAdmin(label: String, value: String, items: List<String>) {
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(value) }
 
@@ -400,7 +400,7 @@ fun DropdownTindakanMemoAdmin(label: String, value: String, items: List<String>)
 }
 
 @Composable
-fun ButtonAksiMemoAdmin() {
+fun ButtonAksiUndanganAdmin() {
     Row(
         modifier = Modifier
             .fillMaxWidth()

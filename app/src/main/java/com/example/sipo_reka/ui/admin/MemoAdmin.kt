@@ -96,8 +96,8 @@ fun MemoTitleAdmin(navController: NavController) {
                 )
             }
             Text(
-                text = "MEMO ADMIN",
-                fontSize = 16.sp,
+                text = "MEMO",
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
                 modifier = Modifier.weight(1f).align(Alignment.CenterVertically).padding(end = 40.dp),

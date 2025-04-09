@@ -22,7 +22,9 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -49,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sipo_reka.R
+import com.example.sipo_reka.ui.admin.ActionButtonsCell
 import com.example.sipo_reka.ui.superadmin.MemoFitur
 import com.example.sipo_reka.ui.superadmin.MemoSearch
 import com.example.sipo_reka.ui.superadmin.MemoTable
@@ -63,7 +66,7 @@ fun MemoArsip(navController: NavController) {
         Spacer(modifier = Modifier.height(20.dp))
         MemoSearchArsip()
         Spacer(modifier = Modifier.height(10.dp))
-        MemoTableArsip()
+        MemoTableArsip(navController)
     }
 }
 
@@ -138,7 +141,7 @@ fun MemoSearchArsip() {
 }
 
 @Composable
-fun MemoTableArsip() {
+fun MemoTableArsip(navController: NavController) {
     val tableData = (1..20).map { index ->
         val status = when (index % 3) {
             0 -> "Disetujui"
@@ -162,7 +165,7 @@ fun MemoTableArsip() {
         "No", "Nama Dokumen", "Tanggal Memo", "Seri", "Dokumen",
         "Tanggal Disahkan", "Divisi", "Status", "Aksi"
     )
-    val columnWidths = listOf(50.dp, 150.dp, 120.dp, 80.dp, 150.dp, 120.dp, 120.dp, 100.dp, 100.dp)
+    val columnWidths = listOf(50.dp, 150.dp, 120.dp, 80.dp, 150.dp, 120.dp, 120.dp, 100.dp, 150.dp)
 
     val scrollStateHorizontal = rememberScrollState()
     val scrollStateVertical = rememberScrollState()
@@ -195,7 +198,13 @@ fun MemoTableArsip() {
                     rowData.forEachIndexed { index, value ->
                         when {
                             index == rowData.lastIndex -> {
-                                MemoDeleteButton(width = columnWidths[index])
+//                                MemoDeleteButton(width = columnWidths[index])
+                                val showArchiveIcon = rowData[7] == "Disetujui"
+                                MemoArsipActionButtons(
+                                    width = columnWidths[index],
+                                    showArchiveIcon = showArchiveIcon,
+                                    navController = navController
+                                )
                             }
                             index == 7 -> {
                                 MemoTableCell(
@@ -298,6 +307,45 @@ fun MemoDeleteButton(width: Dp) {
                 tint = Color.Red, // Warna ikon hapus
                 modifier = Modifier.size(20.dp) // Ukuran ikon
             )
+        }
+    }
+}
+
+@Composable
+fun MemoArsipActionButtons(width: Dp, showArchiveIcon: Boolean, navController: NavController) {
+    val context = LocalContext.current
+    Box(
+        modifier = Modifier.width(width).wrapContentHeight().fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = {navController.navigate("kirimMemoAdmin")
+            }) {
+                Icon(
+//                    painter = painterResource(id = R.drawable.ikon_share),
+                    imageVector = Icons.Default.Download,
+                    contentDescription = "Kirim",
+                    tint = Color(0xFF5D5FEF),
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+            IconButton(onClick = { /* Tambahkan aksi hapus di sini */ }) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Hapus",
+                    tint = Color.Red,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+            IconButton(onClick = {navController.navigate("detailMemoAdmin")}) {
+                Icon(
+//                    painter = painterResource(id = R.drawable.ikon_view),
+                    imageVector = Icons.Default.Visibility,
+                    contentDescription = "View",
+                    tint = Color(0xFF0095FF),
+                    modifier = Modifier.size(20.dp)
+                )
+            }
         }
     }
 }
