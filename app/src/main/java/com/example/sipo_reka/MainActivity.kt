@@ -20,7 +20,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sipo_reka.ui.screen.ForgotPassword
 import androidx.navigation.NavHostController
 import com.example.sipo_reka.ui.arsip.Arsip
-import com.example.sipo_reka.ui.arsip.ArsipMemo
 import com.example.sipo_reka.ui.arsip.MemoArsip
 import com.example.sipo_reka.ui.arsip.RisalahArsip
 import com.example.sipo_reka.ui.arsip.UndanganArsip
