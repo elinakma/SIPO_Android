@@ -28,6 +28,8 @@ import com.example.sipo_reka.ui.arsip.Arsip
 import com.example.sipo_reka.ui.arsip.MemoArsip
 import com.example.sipo_reka.ui.arsip.RisalahArsip
 import com.example.sipo_reka.ui.arsip.UndanganArsip
+import com.example.sipo_reka.ui.manager.DetailMemoDiterima
+import com.example.sipo_reka.ui.manager.DetailMemoDiterimaScreen
 import com.example.sipo_reka.ui.screen.DataPerusahaanScreen
 import com.example.sipo_reka.ui.screen.NewPassword
 import com.example.sipo_reka.ui.screen.ProfilesScreen
@@ -94,6 +96,7 @@ fun AppNavigator(navController: NavHostController) {
         composable("detailRisalah") { DetailRisalahScreen(navController) }
         composable("detailMemoAdmin") { DetailMemoAdminScreen(navController) }
         composable("kirimMemoAdmin") { KirimMemoAdminScreen(navController) }
+        composable("detailMemoDiterima") { DetailMemoDiterimaScreen(navController) }
 
         // Superadmin
         composable("memo_screen") { MemoSuperadmin(navController) }

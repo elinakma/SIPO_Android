@@ -1,6 +1,5 @@
-package com.example.sipo_reka.ui.superadmin
+package com.example.sipo_reka.ui.manager
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -12,13 +11,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Visibility
@@ -42,33 +38,30 @@ import com.example.sipo_reka.R
 import com.example.sipo_reka.ui.screen.BottomNavBar
 
 @Composable
-fun DetailMemo(navController: NavHostController) {
+fun DetailMemoTerkirim(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
             .background(Color.White)
-            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 150.dp)
-            .imePadding()
-            .animateContentSize()
+            .padding(16.dp)
     ){
-        DetailMemoTitle(navController)
+        DetailMemoTerkirimTitle(navController)
         Spacer(modifier = Modifier.height(20.dp))
-        InformationMemoFitur()
+        InformationDetailMemoTerkirimFitur()
         Spacer(modifier = Modifier.height(30.dp))
-        DetailMemoFitur()
+        DetailMemoTerkirimFitur()
         Spacer(modifier = Modifier.height(30.dp))
     }
 }
 
 @Composable
-fun DetailMemoScreen(navController: NavHostController) {
+fun DetailMemoTerkirimScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-        DetailMemo(navController)
+        DetailMemoTerkirim(navController)
 
         BottomNavBar(
             navController = navController,
@@ -80,7 +73,7 @@ fun DetailMemoScreen(navController: NavHostController) {
 }
 
 @Composable
-fun DetailMemoTitle(navController: NavHostController) {
+fun DetailMemoTerkirimTitle(navController: NavHostController) {
     Column(
         modifier = Modifier.padding(top = 25.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -112,7 +105,7 @@ fun DetailMemoTitle(navController: NavHostController) {
 }
 
 @Composable
-fun InformationMemoFitur() {
+fun InformationDetailMemoTerkirimFitur() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -140,18 +133,20 @@ fun InformationMemoFitur() {
 
         // Isi data
         Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            DetailRow(label = "No Surat", value = "2.2/REKA/GEN/HR & GA/II/2025")
-            DetailRow(label = "Seri Surat", value = "2")
-            DetailRow(label = "Perihal", value = "Memo Monitoring Resiko")
-            DetailRow(label = "Tanggal", value = "8 Januari 2025")
-            DetailRow(label = "Kepada", value = "Manager Divisi Logistik")
+            DetailRowMemoTerkirim(label = "No Surat", value = "2.2/REKA/GEN/HR & GA/II/2025")
+            DetailRowMemoTerkirim(label = "Divisi", value = "QMS & HE (IT dan K3)")
+            DetailRowMemoTerkirim(label = "Perihal", value = "Memo Monitoring Resiko")
+            DetailRowMemoTerkirim(label = "Tanggal Surat", value = "8 Januari 2025")
+            DetailRowFileMemoTerkirim()
+            DetailRowMemoTerkirim(label = "Status", value = "Ditolak", isApproved = true)
+            DetailRowMemoTerkirim(label = "Kepada", value = "Manager Divisi Logistik")
         }
 
     }
 }
 
 @Composable
-fun DetailMemoFitur() {
+fun DetailMemoTerkirimFitur() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -167,7 +162,7 @@ fun DetailMemoFitur() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.detail_memo2),
+                painter = painterResource(id = R.drawable.detail_memo1),
                 contentDescription = "Detail",
                 tint = Color(0xFF1E4178)
             )
@@ -179,17 +174,15 @@ fun DetailMemoFitur() {
 
         // Isi data
         Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            DetailRow(label = "Pembuat", value = "Admin Logistik")
-            DetailRow(label = "Status", value = "Diproses", isApproved = true)
-            DetailRow(label = "Dibuat Tanggal", value = "8 Januari 2025")
-            DetailRowFile()
+            DetailRowMemoTerkirim(label = "Penerima", value = "Admin Logistik")
+            DetailRowMemoTerkirim(label = "Catatan", value = "-")
             Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }
 
 @Composable
-fun DetailRow(label: String, value: String, isApproved: Boolean = false) {
+fun DetailRowMemoTerkirim(label: String, value: String, isApproved: Boolean = false) {
     val backgroundColor = when (value) {
         "Disetujui" -> Color(0xFF4CAF50)
         "Diproses" -> Color(0xFFFFA000)
@@ -252,7 +245,7 @@ fun DetailRow(label: String, value: String, isApproved: Boolean = false) {
 }
 
 @Composable
-fun DetailRowFile() {
+fun DetailRowFileMemoTerkirim() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
