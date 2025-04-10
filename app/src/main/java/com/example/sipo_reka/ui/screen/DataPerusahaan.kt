@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.sipo_reka.R
+import com.example.sipo_reka.ui.superadmin.DetailRow
 
 @Composable
 fun DataPerusahaan(navController: NavHostController) {
@@ -47,9 +49,9 @@ fun DataPerusahaan(navController: NavHostController) {
             .padding(16.dp)
     ){
         DataPerusahaanTitle(navController)
-        Spacer(modifier = Modifier.height(6.dp))
-        DataPerusahaanHeader()
         Spacer(modifier = Modifier.height(10.dp))
+        DataPerusahaanHeader()
+        Spacer(modifier = Modifier.height(4.dp))
         DataPerusahaanFitur()
         Spacer(modifier = Modifier.height(30.dp))
     }
@@ -97,8 +99,7 @@ fun DataPerusahaanTitle(navController: NavHostController) {
                 color = Color.Black,
                 modifier = Modifier
                     .weight(1f)
-                    .align(Alignment.CenterVertically)
-                    .padding(end = 40.dp),
+                    .align(Alignment.CenterVertically),
                 textAlign = TextAlign.Center
             )
         }
@@ -110,92 +111,93 @@ fun DataPerusahaanHeader() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 14.dp),
-        verticalArrangement = Arrangement.Center,
+            .padding(horizontal = 14.dp, vertical = 2.dp),
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-        painter = painterResource(id = R.drawable.logo_perusahaan),
-        contentDescription = "Logo",
-        modifier = Modifier.size(120.dp)
+            painter = painterResource(id = R.drawable.logo_reka1),
+            contentDescription = "Profile Icon",
+            modifier = Modifier
+                .size(130.dp)
+                .padding(bottom = 4.dp)
         )
         Text(
             text = "Jl. Candi Sewu No. 30 , Madiun 63122",
             color = Color.Black,
             fontWeight = FontWeight.Bold,
-            fontSize = 13.sp,
-            textAlign = TextAlign.Center
+            fontSize = 13.sp
         )
     }
+    Spacer(modifier = Modifier.height(10.dp))
 }
-
-data class CompanyProfile(
-    val nama: String,
-    val website: String,
-    val telepon: String,
-    val email: String,
-    val alamat: String
-)
 
 @Composable
 fun DataPerusahaanFitur() {
-    val profile = CompanyProfile(
-        nama = "PT Rekaindo",
-        website = "rekaindo.co.id",
-        telepon = "6285123456789",
-        email = "rekaindo@gmail.com",
-        alamat = "jl. candi sewu"
-    )
-
-    Card(
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+    Column(
         modifier = Modifier
-            .width(500.dp)
-            .wrapContentHeight()
-            .shadow(elevation = 6.dp, shape = RoundedCornerShape(5.dp), clip = false)
-            .border(-10.dp, Color(0xFFCCC9C9), shape = RoundedCornerShape(5.dp)),
-        shape = RoundedCornerShape(5.dp),
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .border(1.dp, Color(0xFFCCC9C9), RoundedCornerShape(8.dp))
     ) {
-        Column(
+        // Header
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 14.dp, vertical = 5.dp),
-            verticalArrangement = Arrangement.Center
+                .background(Color(0xFFECE8E8))
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Data Perusahaan",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp)
-                    .align(Alignment.Start),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                CompanyText("Nama Instansi : ${profile.nama}")
-                CompanyText("Alamat Website : ${profile.website}")
-                CompanyText("Telp : ${profile.telepon}")
-                CompanyText("Email : ${profile.email}")
-                CompanyText("Alamat : ${profile.alamat}")
-            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Data Perusahaan", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color.Black)
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        // Isi data
+        Column(modifier = Modifier.padding(horizontal = 12.dp)) {
+            CompanyText(label = "Nama Instansi", value = "2.2/REKA/GEN/HR & GA/II/2025")
+            CompanyText(label = "Alamat Website", value = "www.ptrekaindo.co.id")
+            CompanyText(label = "Telepon", value = "+62 351 4773030")
+            CompanyText(label = "Email", value = "sekretariat@ptrekaindo.co.id")
+            CompanyText(label = "Alamat", value = "Jl. Candi Sewu No. 30 Madiun, 63122 Indonesia")
         }
     }
 }
 
 @Composable
-fun CompanyText(text: String) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .border(1.dp, Color(0xFFEEEEEE), shape = RoundedCornerShape(4.dp))
-            .padding(8.dp)
-    ) {
-        Text(
-            text = text,
-            color = Color.Black,
-            fontSize = 13.sp
-        )
+fun CompanyText(label: String, value: String) {
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(1.dp, Color(0xFFEEEEEE), shape = RoundedCornerShape(4.dp))
+                .padding(horizontal = 12.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Label
+            Text(
+                text = label,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color(0xFF1E4178),
+                modifier = Modifier.width(120.dp) // Lebar tetap agar titik dua sejajar
+            )
+            // Titik dua
+            Text(
+                text = ":",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color(0xFF1E4178),
+                modifier = Modifier.width(8.dp) // Jarak titik dua tetap
+            )
+            // Value
+            Text(
+                text = value,
+                fontSize = 14.sp,
+                color = Color(0xFF1E4178)
+            )
+        }
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }
