@@ -24,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,12 +34,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.example.sipo_reka.R
+import com.example.sipo_reka.model.Undangan
 import com.example.sipo_reka.ui.screen.BottomNavBar
+import com.example.sipo_reka.viewModel.UndanganViewModel
 
 @Composable
-fun DetailUndangan(navController: NavHostController) {
+fun DetailUndangan(navController: NavController, undanganViewModel: UndanganViewModel, undanganId: Int) {
+    val undanganList = undanganViewModel.undanganList.value
+    val selectedUndangan = undanganList.find { it.id_undangan == undanganId }
+
+    LaunchedEffect(Unit) {
+        undanganViewModel.fetchUndangan()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -47,21 +57,24 @@ fun DetailUndangan(navController: NavHostController) {
     ){
         DetailUndanganTitle(navController)
         Spacer(modifier = Modifier.height(20.dp))
-        InformationUndanganFitur()
-        Spacer(modifier = Modifier.height(30.dp))
-        DetailUndanganFitur()
-        Spacer(modifier = Modifier.height(30.dp))
+        selectedUndangan?.let {
+            InformationUndanganFitur(it)
+            Spacer(modifier = Modifier.height(30.dp))
+            DetailUndanganFitur(it)
+        } ?: run {
+            Text("Data undangan tidak ditemukan.", color = Color.Red)
+        }
     }
 }
 
 @Composable
-fun DetailUndanganScreen(navController: NavHostController) {
+fun DetailUndanganScreen(navController: NavController, undanganViewModel: UndanganViewModel, undanganId: Int) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-        DetailUndangan(navController)
+        DetailUndangan(navController, undanganViewModel, undanganId)
 
         BottomNavBar(
             navController = navController,
@@ -73,7 +86,7 @@ fun DetailUndanganScreen(navController: NavHostController) {
 }
 
 @Composable
-fun DetailUndanganTitle(navController: NavHostController) {
+fun DetailUndanganTitle(navController: NavController) {
     Column(
         modifier = Modifier.padding(top = 25.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -105,7 +118,7 @@ fun DetailUndanganTitle(navController: NavHostController) {
 }
 
 @Composable
-fun InformationUndanganFitur() {
+fun InformationUndanganFitur(undangan: Undangan) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -133,18 +146,32 @@ fun InformationUndanganFitur() {
 
         // Isi data
         Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            DetailRowUndangan(label = "No Surat", value = "2.2/REKA/GEN/HR & GA/II/2025")
-            DetailRowUndangan(label = "Seri Surat", value = "2")
-            DetailRowUndangan(label = "Perihal", value = "Undangan Rapat Kajian")
-            DetailRowUndangan(label = "Tanggal", value = "8 Januari 2025")
-            DetailRowUndangan(label = "Kepada", value = "Manager Divisi Logistik")
+            DetailRowUndangan(label = "No Surat", value = undangan.nomor_undangan)
+            DetailRowUndangan(label = "Seri Surat", value = undangan.seri_surat ?: "-")
+            DetailRowUndangan(label = "Perihal", value = undangan.judul)
+            DetailRowUndangan(label = "Tanggal", value = formatTanggal(undangan.tgl_dibuat)) // format tanggal didefinisikan functionnya di UndanganSuperamdin
+            DetailRowUndangan(label = "Kepada", value = undangan.tujuan ?: "-")
         }
 
     }
 }
 
 @Composable
-fun DetailUndanganFitur() {
+fun DetailUndanganFitur(undangan: Undangan) {
+    val statusText = when (undangan.status) {
+        "approve" -> "Diterima"
+        "pending" -> "Diproses"
+        "reject" -> "Ditolak"
+        else -> "Status Tidak Dikenal"
+    }
+
+    val statusColor = when (undangan.status) {
+        "approve" -> Color(0xFF4CAF50) // Hijau
+        "pending" -> Color(0xFFFFA000) // Kuning
+        "reject" -> Color(0xFFF44336) // Merah
+        else -> Color.Gray
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -172,9 +199,9 @@ fun DetailUndanganFitur() {
 
         // Isi data
         Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            DetailRowUndangan(label = "Pembuat", value = "Admin Logistik")
-            DetailRowUndangan(label = "Status", value = "Diproses", isApproved = true)
-            DetailRowUndangan(label = "Dibuat Tanggal", value = "8 Januari 2025")
+            DetailRowUndangan(label = "Pembuat", value = undangan.pembuat ?: "-")
+            DetailRowUndangan(label = "Status", value = statusText, isApproved = true, statusColor = statusColor)
+            DetailRowUndangan(label = "Dibuat Tanggal", value = formatTanggal(undangan.tgl_dibuat)) // format tanggal di definisikan functionnya di UndanganSuperamdin
             DetailRowFileUndangan()
             Spacer(modifier = Modifier.height(10.dp))
         }
@@ -182,14 +209,7 @@ fun DetailUndanganFitur() {
 }
 
 @Composable
-fun DetailRowUndangan(label: String, value: String, isApproved: Boolean = false) {
-    val backgroundColor = when (value) {
-        "Disetujui" -> Color(0xFF4CAF50)
-        "Diproses" -> Color(0xFFFFA000)
-        "Ditolak" -> Color(0xFFF44336)
-        else -> Color.Gray
-    }
-
+fun DetailRowUndangan(label: String, value: String, isApproved: Boolean = false, statusColor: Color = Color.Gray) {
     Column {
         Row(
             modifier = Modifier
@@ -221,7 +241,7 @@ fun DetailRowUndangan(label: String, value: String, isApproved: Boolean = false)
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
-                        .background(backgroundColor)
+                        .background(statusColor)
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(

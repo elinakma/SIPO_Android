@@ -28,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,12 +38,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.sipo_reka.R
+import com.example.sipo_reka.model.Undangan
 import com.example.sipo_reka.ui.screen.BottomNavBar
+import com.example.sipo_reka.ui.superadmin.DetailRowUndangan
+import com.example.sipo_reka.ui.superadmin.DetailUndanganFitur
+import com.example.sipo_reka.ui.superadmin.InformationUndanganFitur
+import com.example.sipo_reka.ui.superadmin.formatTanggal
+import com.example.sipo_reka.viewModel.UndanganViewModel
 
 @Composable
-fun DetailUndanganAdmin(navController: NavHostController) {
+fun DetailUndanganAdmin(navController: NavController, undanganViewModel: UndanganViewModel, undanganId: Int) {
+    val undanganList = undanganViewModel.undanganList.value
+    val selectedUndangan = undanganList.find { it.id_undangan == undanganId }
+
+    LaunchedEffect(Unit) {
+        undanganViewModel.fetchUndangan()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -54,23 +69,26 @@ fun DetailUndanganAdmin(navController: NavHostController) {
     ){
         DetailUndanganAdminTitle(navController)
         Spacer(modifier = Modifier.height(20.dp))
-        InformationUndanganAdminFitur()
-        Spacer(modifier = Modifier.height(30.dp))
-        DetailUndanganAdminFitur()
-        Spacer(modifier = Modifier.height(30.dp))
-        CatatanUndanganAdmin()
-        Spacer(modifier = Modifier.height(20.dp))
+        selectedUndangan?.let {
+            InformationUndanganFiturAdmin(it)
+            Spacer(modifier = Modifier.height(30.dp))
+            DetailUndanganFiturAdmin(it)
+            Spacer(modifier = Modifier.height(20.dp))
+            CatatanUndanganAdmin(it)
+        } ?: run {
+            Text("Data undangan tidak ditemukan.", color = Color.Red)
+        }
     }
 }
 
 @Composable
-fun DetailUndanganAdminScreen(navController: NavHostController) {
+fun DetailUndanganAdminScreen(navController: NavController, undanganViewModel: UndanganViewModel, undanganId: Int) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-        DetailUndanganAdmin(navController)
+        DetailUndanganAdmin(navController, undanganViewModel, undanganId)
 
         BottomNavBar(
             navController = navController,
@@ -82,7 +100,7 @@ fun DetailUndanganAdminScreen(navController: NavHostController) {
 }
 
 @Composable
-fun DetailUndanganAdminTitle(navController: NavHostController) {
+fun DetailUndanganAdminTitle(navController: NavController) {
     Column(
         modifier = Modifier.padding(top = 25.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -114,7 +132,7 @@ fun DetailUndanganAdminTitle(navController: NavHostController) {
 }
 
 @Composable
-fun InformationUndanganAdminFitur() {
+fun InformationUndanganFiturAdmin(undangan: Undangan) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -142,17 +160,31 @@ fun InformationUndanganAdminFitur() {
 
         // Isi data
         Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            DetailRowUndanganAdmin(label = "No Surat", value = "2.2/REKA/GEN/HR & GA/II/2025")
-            DetailRowUndanganAdmin(label = "Seri Surat", value = "2")
-            DetailRowUndanganAdmin(label = "Perihal", value = "Undangan Rapat Kajian")
-            DetailRowUndanganAdmin(label = "Tanggal", value = "8 Januari 2025")
-            DetailRowUndanganAdmin(label = "Kepada", value = "Manager Divisi Logistik")
+            DetailRowUndanganAdmin(label = "No Surat", value = undangan.nomor_undangan)
+            DetailRowUndanganAdmin(label = "Seri Surat", value = undangan.seri_surat ?: "-")
+            DetailRowUndanganAdmin(label = "Perihal", value = undangan.judul)
+            DetailRowUndanganAdmin(label = "Tanggal", value = formatTanggal(undangan.tgl_dibuat)) // format tanggal didefinisikan functionnya di UndanganSuperamdin
+            DetailRowUndanganAdmin(label = "Kepada", value = undangan.tujuan ?: "-")
         }
     }
 }
 
 @Composable
-fun DetailUndanganAdminFitur() {
+fun DetailUndanganFiturAdmin(undangan: Undangan) {
+    val statusText = when (undangan.status) {
+        "approve" -> "Diterima"
+        "pending" -> "Diproses"
+        "reject" -> "Ditolak"
+        else -> "Status Tidak Dikenal"
+    }
+
+    val statusColor = when (undangan.status) {
+        "approve" -> Color(0xFF4CAF50) // Hijau
+        "pending" -> Color(0xFFFFA000) // Kuning
+        "reject" -> Color(0xFFF44336) // Merah
+        else -> Color.Gray
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -180,9 +212,9 @@ fun DetailUndanganAdminFitur() {
 
         // Isi data
         Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            DetailRowUndanganAdmin(label = "Pembuat", value = "Admin Logistik")
-            DetailRowUndanganAdmin(label = "Status", value = "Disetujui", isApproved = true)
-            DetailRowUndanganAdmin(label = "Dibuat Tanggal", value = "8 Januari 2025")
+            DetailRowUndangan(label = "Pembuat", value = undangan.pembuat ?: "-")
+            DetailRowUndangan(label = "Status", value = statusText, isApproved = true, statusColor = statusColor)
+            DetailRowUndangan(label = "Dibuat Tanggal", value = formatTanggal(undangan.tgl_dibuat)) // format tanggal di definisikan functionnya di UndanganSuperamdin
             DetailRowFileUndanganAdmin()
             Spacer(modifier = Modifier.height(10.dp))
         }
@@ -190,14 +222,7 @@ fun DetailUndanganAdminFitur() {
 }
 
 @Composable
-fun DetailRowUndanganAdmin(label: String, value: String, isApproved: Boolean = false) {
-    val backgroundColor = when (value) {
-        "Disetujui" -> Color(0xFF4CAF50)
-        "Diproses" -> Color(0xFFFFA000)
-        "Ditolak" -> Color(0xFFF44336)
-        else -> Color.Gray
-    }
-
+fun DetailRowUndanganAdmin(label: String, value: String, isApproved: Boolean = false, statusColor: Color = Color.Gray) {
     Column {
         Row(
             modifier = Modifier
@@ -229,7 +254,7 @@ fun DetailRowUndanganAdmin(label: String, value: String, isApproved: Boolean = f
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
-                        .background(backgroundColor)
+                        .background(statusColor)
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
@@ -321,7 +346,7 @@ fun DetailRowFileUndanganAdmin() {
 }
 
 @Composable
-fun CatatanUndanganAdmin() {
+fun CatatanUndanganAdmin(undangan: Undangan) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -343,7 +368,7 @@ fun CatatanUndanganAdmin() {
 
         // Isi data
         Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-            CatatanValueUndanganAdmin(value = "Surat Disetujui dan lanjutkan")
+            CatatanValueUndanganAdmin(value = undangan.pembuat ?: "-")
             Spacer(modifier = Modifier.height(10.dp))
         }
     }

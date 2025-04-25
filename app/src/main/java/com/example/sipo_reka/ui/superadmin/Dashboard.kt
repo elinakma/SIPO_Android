@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -41,11 +42,14 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.sipo_reka.ui.screen.BottomNavBar
+import com.example.sipo_reka.viewModel.AuthViewModel
+import com.example.sipo_reka.viewModel.LoginState
 
 // mengatur panjang setiap function dalam dashboard
 @Composable
-fun DashboardScreen(navController: NavController) {
+fun DashboardScreen(navController: NavHostController, role: String?) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -58,19 +62,19 @@ fun DashboardScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(15.dp))
         DashboardOverview()
         Spacer(modifier = Modifier.height(15.dp))
-        DashboardMenu(navController)
+        DashboardMenu(navController, role) // Kirim langsung role
         Spacer(modifier = Modifier.height(15.dp))
     }
 }
 
 @Composable
-fun DashboardsScreen(navController: NavController) {
+fun DashboardsScreen(navController: NavHostController, authViewModel: AuthViewModel, role: String?) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-        DashboardScreen(navController)
+        DashboardScreen(navController, role)
 
         BottomNavBar(
             navController = navController,
@@ -281,7 +285,7 @@ fun OverviewCard(title: String, count: String, icon: Int) {
 
 // mengatur menu di dashboard
 @Composable
-fun DashboardMenu(navController: NavController) {
+fun DashboardMenu(navController: NavHostController, role: String?) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
@@ -313,30 +317,55 @@ fun DashboardMenu(navController: NavController) {
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // isi dari menu card
-            val menuItems = listOf(
-                Triple("Memo", R.drawable.menu_memo, "memo_screen"),
-                Triple("Risalah Rapat", R.drawable.menu_risalah, "risalah_screen"),
-                Triple("Undangan Rapat", R.drawable.menu_undangan, "undangan_screen"),
-                Triple("Arsip", R.drawable.menu_arsip, "arsip_screen"),
-                Triple("Laporan", R.drawable.menu_laporan, "laporan_screen"),
-                Triple("Manajemen Pengguna", R.drawable.menu_user, "user_management_screen"),
-                Triple("Data Perusahaan", R.drawable.menu_data, "dataPerusahaan"),
-                Triple("Info", R.drawable.menu_info, "info")
-            )
+                // isi dari menu card
+                if (role == null) {
+                    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                    return@Card
+                }
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(4),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(menuItems) { (menu, icon, route) ->
-                    MenuCard(menu, icon, route, navController)
+                val menuItems = when (role) {
+                    "superadmin" -> listOf(
+                        Triple("Memo", R.drawable.menu_memo, "memo_screen"),
+                        Triple("Risalah Rapat", R.drawable.menu_risalah, "risalah_screen"),
+                        Triple("Undangan Rapat", R.drawable.menu_undangan, "undangan_screen"),
+                        Triple("Arsip", R.drawable.menu_arsip, "arsip_screen"),
+                        Triple("Laporan", R.drawable.menu_laporan, "laporan_screen"),
+                        Triple("Manajemen Pengguna", R.drawable.menu_user, "user_management_screen"),
+                        Triple("Data Perusahaan", R.drawable.menu_data, "dataPerusahaan"),
+                        Triple("Info", R.drawable.menu_info, "info")
+                    )
+
+                    "admin" -> listOf(
+                        Triple("Memo", R.drawable.menu_memo, "memoAdmin"),
+                        Triple("Risalah Rapat", R.drawable.menu_risalah, "risalahAdmin"),
+                        Triple("Undangan Rapat", R.drawable.menu_undangan, "undanganAdmin"),
+                        Triple("Arsip", R.drawable.menu_arsip, "arsip_screen"),
+                        Triple("Data Perusahaan", R.drawable.menu_data, "dataPerusahaan")
+                    )
+
+                    "manager" -> listOf(
+                        Triple("Memo", R.drawable.menu_memo, "memoManager"),
+                        Triple("Risalah Rapat", R.drawable.menu_risalah, "risalahManager"),
+                        Triple("Undangan Rapat", R.drawable.menu_undangan, "undanganManager"),
+                        Triple("Data Perusahaan", R.drawable.menu_data, "dataPerusahaan"),
+                        Triple("Info1", R.drawable.menu_info, "detailMemo")
+                    )
+                    else -> emptyList()
+                }
+
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(4),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(menuItems) { (menu, icon, route) ->
+                        MenuCard(menu, icon, route, navController)
+                    }
                 }
             }
-
         }
     }
-}
 
 // untuk mengatur menuItems
 @Composable
@@ -364,4 +393,5 @@ fun MenuCard(title: String, icon: Int, route: String, navController: NavControll
         )
     }
 }
+
 

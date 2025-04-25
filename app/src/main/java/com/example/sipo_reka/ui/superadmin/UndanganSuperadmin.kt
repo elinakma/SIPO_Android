@@ -57,14 +57,27 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import com.example.sipo_reka.model.Undangan
+import com.example.sipo_reka.viewModel.UndanganViewModel
+import java.util.TimeZone
 
 @Composable
-fun UndanganSuperadmin(navController: NavController) {
+fun UndanganSuperadmin(navController: NavController, undanganViewModel: UndanganViewModel) {
+    // memanggil list undangan di UndanganViewModel
+    val undanganList = undanganViewModel.undanganList.value
+
+    // mengambil data undangan dr api di undanganViewModel
+    LaunchedEffect(Unit) {
+        undanganViewModel.fetchUndangan()
+    }
+
     Column(
         modifier = Modifier.fillMaxSize().background(Color.White).padding(16.dp)
     ) {
@@ -74,7 +87,7 @@ fun UndanganSuperadmin(navController: NavController) {
         Spacer(modifier = Modifier.height(10.dp))
         UndanganFitur()
         Spacer(modifier = Modifier.height(15.dp))
-        UndanganTable()
+        UndanganTable(navController, undanganList)
     }
 }
 
@@ -324,32 +337,14 @@ fun UndanganFitur() {
 }
 
 @Composable
-fun UndanganTable() {
-    val tableData = (1..20).map { index ->
-        val status = when (index % 3) {
-            0 -> "Disetujui"
-            1 -> "Diproses"
-            else -> "Ditolak"
-        }
-        listOf(
-            index.toString(),
-            "Undangan Rapat Kerja Kajian $index",
-            "01-01-2024",
-            "S-00$index",
-            "5.5/REKA/GEN/QM & SHE (IT DAN K3)/III/2025",
-            "02-01-2024",
-            "QM & SHE-TI",
-            status,
-            "Hapus"
-        )
-    }
-
+fun UndanganTable(navController: NavController, undanganList: List<Undangan>) {
     val columnHeaders = listOf(
         "No", "Nama Dokumen", "Tanggal Undangan", "Seri", "Dokumen",
         "Tanggal Disahkan", "Divisi", "Status", "Aksi"
     )
     val columnWidths = listOf(50.dp, 150.dp, 120.dp, 80.dp, 150.dp, 120.dp, 120.dp, 100.dp, 100.dp)
 
+    // scroll horizontal dan vertikal untuk tabel
     val scrollStateHorizontal = rememberScrollState()
     val scrollStateVertical = rememberScrollState()
 
@@ -357,9 +352,9 @@ fun UndanganTable() {
         modifier = Modifier
             .fillMaxSize()
             .padding(5.dp)
-            .horizontalScroll(scrollStateHorizontal)
+            .horizontalScroll(scrollStateHorizontal) //pemanggilan scroll horizontal
     ) {
-        Column(modifier = Modifier.verticalScroll(scrollStateVertical)) {
+        Column(modifier = Modifier.verticalScroll(scrollStateVertical)) { //pemanggilan scroll vertikal
             // Header
             Row(Modifier.fillMaxWidth().background(Color.White)) {
                 columnHeaders.forEachIndexed { index, title ->
@@ -368,53 +363,77 @@ fun UndanganTable() {
             }
 
             // Data Rows
-            tableData.forEach { rowData ->
-                val status = rowData[7]
+            undanganList.forEachIndexed { index, undangan ->
+                // mengatur status undangan dari approve diubah ke diterima dan mengubah warna
+                val status = undangan.status
+                val statusText = when (status) {
+                    "approve" -> "Diterima"
+                    "pending" -> "Diproses"
+                    "reject" -> "Ditolak"
+                    else -> "Status Tidak Dikenal"
+                }
                 val statusColor = when (status) {
-                    "Disetujui" -> Color(0xFF00B087) // Soft green
-                    "Diproses" -> Color(0xFFDD9A19) // Soft yellow
-                    "Ditolak" -> Color(0xFFFF0000)  // Soft red
+                    "approve" -> Color(0xFF00B087)
+                    "pending" -> Color(0xFFDD9A19)
+                    "reject" -> Color(0xFFFF0000)
                     else -> Color.LightGray
                 }
 
+                val rowData = listOf(
+                    (index + 1).toString(),                                 // No
+                    undangan.judul,                                         // Nama Dokumen
+                    formatTanggal(undangan.tgl_dibuat),                     // Tanggal Undangan (memanggil function format tgl)
+                    undangan.seri_surat ?: "",                              // Seri
+                    undangan.nomor_undangan,                                // Dokumen
+                    formatTanggal(undangan.tgl_disahkan ?: ""),     // Tanggal Disahkan (memanggil function format tgl)
+                    undangan.divisi?.nm_divisi ?: ""                        // Divisi (ambil nm_divisi)
+                )
+
                 Row {
-                    rowData.forEachIndexed { index, value ->
-                        when {
-//                            index == rowData.lastIndex -> {
-//                                UndanganDeleteButtonCell(width = columnWidths[index])
-//                            }
-                            index == rowData.lastIndex -> {
-                                val showArchiveIcon = rowData[7] == "Disetujui"
-                                ActionButtons(
-                                    width = columnWidths[index],
-                                    showArchiveIcon = showArchiveIcon
-                                )
-                            }
-                            index == 7 -> {
-                                UndanganTableCell(
-                                    text = value,
-                                    width = columnWidths[index],
-                                    isHeader = false,
-                                    backgroundColor = statusColor,
-                                    textColor = Color.White
-                                )
-                            }
-                            else -> {
-                                val textColor = if (index == 1) statusColor else Color.Black
-                                UndanganTableCell(
-                                    text = value,
-                                    width = columnWidths[index],
-                                    isHeader = false,
-                                    isNoColumn = index == 0,
-                                    backgroundColor = Color.White,
-                                    textColor = textColor
-                                )
-                            }
-                        }
+                    rowData.forEachIndexed { columnIndex, value ->
+                        val textColor = if (columnIndex == 1) statusColor else Color.Black
+                        UndanganTableCell(
+                            text = value,
+                            width = columnWidths[columnIndex],
+                            isHeader = false,
+                            isNoColumn = columnIndex == 0,
+                            backgroundColor = Color.White,
+                            textColor = textColor
+                        )
                     }
+
+                    // Kolom Status (warna background)
+                    UndanganTableCell(
+                        text = statusText,
+                        width = columnWidths[7],
+                        isHeader = false,
+                        backgroundColor = statusColor,
+                        textColor = Color.White
+                    )
+
+                    // Kolom Aksi (tombol)
+                    ActionButtons(
+                        width = columnWidths[8],
+                        showArchiveIcon = status == "Diterima",
+                        undanganId = undangan.id_undangan,
+                        navController = navController
+                    )
                 }
             }
         }
+    }
+}
+
+// format tgl dibuat dan tgl disahkan agar tidak ada 00000 di belakangnya
+fun formatTanggal(tanggal: String): String {
+    return try {
+        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.getDefault())
+        parser.timeZone = TimeZone.getTimeZone("UTC") // karena format aslinya pakai Z (Zulu/UTC)
+        val date = parser.parse(tanggal)
+        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) // ubah ke format tahun-bulan-tgl
+        formatter.format(date!!)
+    } catch (e: Exception) {
+        tanggal // undo ke nilai asli kalau parsing gagal
     }
 }
 
@@ -475,34 +494,25 @@ fun UndanganTableCell(
     }
 }
 
+// button aksi di setiap list undangan
 @Composable
-fun UndanganDeleteButtonCell(width: Dp) {
-    Box(
-        modifier = Modifier
-            .width(width)
-            .wrapContentHeight()
-            .fillMaxWidth(),
-        contentAlignment = Alignment.Center
-    ) {
-        IconButton(onClick = { /* Tambahkan aksi hapus di sini */ }) {
-            Icon(
-                imageVector = Icons.Default.Delete,
-                contentDescription = "Hapus",
-                tint = Color.Red, // Warna ikon hapus
-                modifier = Modifier.size(20.dp) // Ukuran ikon
-            )
-        }
-    }
-}
-
-@Composable
-fun ActionButtons(width: Dp, showArchiveIcon: Boolean) {
-    val context = LocalContext.current
+fun ActionButtons(width: Dp, showArchiveIcon: Boolean, undanganId : Int, navController: NavController) {
     Box(
         modifier = Modifier.width(width).wrapContentHeight().fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(
+                onClick = { navController.navigate("detailUndanganSuperadmin/$undanganId" ) } // membuka detail undangan berdasarkan id_undangan
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Visibility,
+                    contentDescription = "Detail",
+                    tint = Color.Blue,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+
             IconButton(onClick = { /* Tambahkan aksi hapus di sini */ }) {
                 Icon(
                     imageVector = Icons.Default.Delete,

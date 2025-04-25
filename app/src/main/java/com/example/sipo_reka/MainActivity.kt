@@ -1,5 +1,6 @@
 package com.example.sipo_reka
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sipo_reka.ui.screen.SplashScreen
 import com.example.sipo_reka.ui.theme.SIPO_RekaTheme
 import com.example.sipo_reka.ui.screen.LoginScreen
@@ -22,11 +24,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.sipo_reka.ui.screen.ForgotPassword
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.example.sipo_reka.ui.admin.DashboardAdmin
 import com.example.sipo_reka.ui.admin.DashboardsAdmin
 import com.example.sipo_reka.ui.admin.DetailMemoAdminScreen
 import com.example.sipo_reka.ui.admin.DetailRisalahAdmin
 import com.example.sipo_reka.ui.admin.DetailRisalahAdminScreen
+import com.example.sipo_reka.ui.admin.DetailUndanganAdmin
 import com.example.sipo_reka.ui.admin.DetailUndanganAdminScreen
 import com.example.sipo_reka.ui.admin.KirimMemoAdminScreen
 import com.example.sipo_reka.ui.admin.KirimRisalahAdmin
@@ -53,7 +58,9 @@ import com.example.sipo_reka.ui.manager.MemoTerkirim
 import com.example.sipo_reka.ui.manager.RisalahManager
 import com.example.sipo_reka.ui.manager.UndanganManager
 import com.example.sipo_reka.ui.screen.DataPerusahaanScreen
+import com.example.sipo_reka.ui.screen.InfoScreen
 import com.example.sipo_reka.ui.screen.NewPassword
+import com.example.sipo_reka.ui.screen.NotificationScreen
 import com.example.sipo_reka.ui.screen.ProfilesScreen
 import com.example.sipo_reka.ui.screen.Sementara
 import com.example.sipo_reka.ui.screen.SuccessPassword
@@ -62,11 +69,15 @@ import com.example.sipo_reka.ui.superadmin.DashboardScreen
 import com.example.sipo_reka.ui.superadmin.DashboardsScreen
 import com.example.sipo_reka.ui.superadmin.DetailMemoScreen
 import com.example.sipo_reka.ui.superadmin.DetailRisalahScreen
+import com.example.sipo_reka.ui.superadmin.DetailUndangan
 import com.example.sipo_reka.ui.superadmin.DetailUndanganScreen
 import com.example.sipo_reka.ui.superadmin.MemoSuperadmin
 import com.example.sipo_reka.ui.superadmin.RisalahSuperadmin
 import com.example.sipo_reka.ui.superadmin.UndanganSuperadmin
 import com.example.sipo_reka.ui.superadmin.UserManage
+import com.example.sipo_reka.viewModel.AuthViewModel
+import com.example.sipo_reka.viewModel.AuthViewModelFactory
+import com.example.sipo_reka.viewModel.UndanganViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,7 +89,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             SIPO_RekaTheme {
                 val navController = rememberNavController() // Buat NavController
-                AppNavigator(navController)
+                val undanganViewModel: UndanganViewModel = viewModel()
+                AppNavigator(navController = navController, context = applicationContext, undanganViewModel = undanganViewModel)
             }
         }
     }
@@ -94,7 +106,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun AppNavigator(navController: NavHostController) {
+fun AppNavigator(navController: NavHostController, context: Context, undanganViewModel: UndanganViewModel) {
+    val factory = AuthViewModelFactory(context)
+    val authViewModel: AuthViewModel = viewModel(factory = factory)
+
     NavHost(
         navController = navController,
         startDestination = "splash"
@@ -104,20 +119,53 @@ fun AppNavigator(navController: NavHostController) {
                 navController.navigate("login")
             }
         }
-        composable("login") { LoginScreen(navController) }
+        composable("login") { LoginScreen(navController, authViewModel) }
+        composable(
+            route = "dashboard/{role}",
+            arguments = listOf(navArgument("role") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val role = backStackEntry.arguments?.getString("role")
+            DashboardsScreen(navController, authViewModel, role)
+        }
+        composable("undangan_screen") { UndanganSuperadmin(navController, undanganViewModel) }
+        composable("undanganAdmin") { UndanganAdmin(navController, undanganViewModel) }
+        composable("undanganManager") { UndanganManager(navController, undanganViewModel) }
+        composable(
+            route = "detailUndanganSuperadmin/{undanganId}",
+            arguments = listOf(navArgument("undanganId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val undanganId = backStackEntry.arguments?.getInt("undanganId") ?: -1
+            DetailUndangan(navController, undanganViewModel, undanganId)
+        }
+        composable(
+            route = "detailUndanganAdmin/{undanganId}",
+            arguments = listOf(navArgument("undanganId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val undanganId = backStackEntry.arguments?.getInt("undanganId") ?: -1
+            DetailUndanganAdmin(navController, undanganViewModel, undanganId)
+        }
+        composable(
+            route = "detailUndanganManager/{undanganId}",
+            arguments = listOf(navArgument("undanganId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val undanganId = backStackEntry.arguments?.getInt("undanganId") ?: -1
+            DetailUndanganManager(navController, undanganViewModel, undanganId)
+        }
+
         composable("forgotPassword") { ForgotPassword(navController) }
         composable("verificationPassword") { VerificationPassword(navController) }
         composable("newPassword") { NewPassword(navController) }
         composable("successPassword") { SuccessPassword(navController) }
-        composable("dashboard") { DashboardsScreen(navController) }
+
+        composable("notification") { NotificationScreen(navController) }
         composable("profile") { ProfilesScreen(navController) }
         composable("dataPerusahaan") { DataPerusahaanScreen(navController) }
         composable("detailMemo") { DetailMemoScreen(navController) }
+        composable("info") { InfoScreen(navController) }
 
         // Superadmin
         composable("memo_screen") { MemoSuperadmin(navController) }
         composable("user_management_screen") { UserManage(navController) }
-        composable("undangan_screen") { UndanganSuperadmin(navController) }
         composable("risalah_screen") { RisalahSuperadmin(navController) }
 
         // Arsip
@@ -133,20 +181,16 @@ fun AppNavigator(navController: NavHostController) {
         composable("memoTerkirim") { MemoTerkirim(navController) }
         composable("detailMemoDiterima") { DetailMemoDiterimaScreen(navController) }
         composable("detailMemoTerkirim") { DetailMemoTerkirimScreen(navController) }
-        composable("undanganManager") { UndanganManager(navController) }
-        composable("detailUndanganManager") { DetailUndanganManager(navController) }
         composable("risalahManager") { RisalahManager(navController) }
         composable("detailRisalahManager") { DetailRisalahManager(navController) }
 
         // Admin
-        composable("dashboardAdmin") { DashboardsAdmin(navController) }
+        composable("dashboardAdmin") { DashboardsAdmin(navController, authViewModel) }
         // Memo
         composable("memoAdmin") { MemoAdmin(navController) }
         composable("detailMemoAdmin") { DetailMemoAdminScreen(navController) }
         composable("kirimMemoAdmin") { KirimMemoAdminScreen(navController) }
         // Undangan
-        composable("undanganAdmin") { UndanganAdmin(navController) }
-        composable("detailUndanganAdmin") { DetailUndanganAdminScreen(navController) }
         composable("kirimUndanganAdmin") { KirimUndanganAdminScreen(navController) }
         // Risalah
         composable("risalahAdmin") { RisalahAdmin(navController) }
@@ -154,18 +198,6 @@ fun AppNavigator(navController: NavHostController) {
         composable("kirimRisalahAdmin") { KirimRisalahAdminScreen(navController) }
 
         composable("sementara") { Sementara(navController) }
-    }
-}
-
-@Composable
-fun MainScreen() {
-    Scaffold(
-        modifier = Modifier.fillMaxSize()
-    ) { innerPadding ->
-        Text(
-            text = "Ini adalah layar utama setelah Splash Screen",
-            modifier = Modifier.padding(innerPadding)
-        )
     }
 }
 

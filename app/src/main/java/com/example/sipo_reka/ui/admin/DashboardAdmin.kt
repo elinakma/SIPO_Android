@@ -41,10 +41,11 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import com.example.sipo_reka.viewModel.AuthViewModel
 
 
 @Composable
-fun DashboardAdmin(navController: NavController) {
+fun DashboardAdmin(navController: NavController,  authViewModel: AuthViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,19 +58,19 @@ fun DashboardAdmin(navController: NavController) {
         Spacer(modifier = Modifier.height(15.dp))
         DashboardOverviewAdmin()
         Spacer(modifier = Modifier.height(15.dp))
-        DashboardMenuAdmin(navController)
+        DashboardMenuAdmin(navController, authViewModel)
         Spacer(modifier = Modifier.height(15.dp))
     }
 }
 
 @Composable
-fun DashboardsAdmin(navController: NavController) {
+fun DashboardsAdmin(navController: NavController, authViewModel: AuthViewModel) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-        DashboardAdmin(navController)
+        DashboardAdmin(navController, authViewModel)
 
         BottomNavBar(
             navController = navController,
@@ -280,7 +281,7 @@ fun OverviewCardAdmin(title: String, count: String, icon: Int) {
 
 // mengatur menu di dashboard
 @Composable
-fun DashboardMenuAdmin(navController: NavController) {
+fun DashboardMenuAdmin(navController: NavController,  authViewModel: AuthViewModel) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier

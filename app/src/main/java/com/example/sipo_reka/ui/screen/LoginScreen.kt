@@ -1,5 +1,10 @@
 package com.example.sipo_reka.ui.screen
 
+import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,6 +31,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -50,14 +56,32 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sipo_reka.R
 import androidx.navigation.NavController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.sipo_reka.data.network.ApiClient
+import com.example.sipo_reka.model.LoginRequest
+import com.example.sipo_reka.model.LoginResponse
 import com.example.sipo_reka.ui.screen.ForgotPassword
+import com.example.sipo_reka.viewModel.AuthViewModel
+import com.example.sipo_reka.viewModel.AuthViewModelFactory
+import com.example.sipo_reka.viewModel.LoginState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
+    Log.d("LoginScreen", "Composisi dimulai")
+    val context = LocalContext.current
+    val state = authViewModel.loginState
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -128,7 +152,7 @@ fun LoginScreen(navController: NavController) {
 
                     TextField(
                         value = emailState.value,
-                        onValueChange = { emailState.value = it},
+                        onValueChange = { emailState.value = it },
                         leadingIcon = {
                             Image(
                                 painter = painterResource(id = R.drawable.user),
@@ -157,7 +181,7 @@ fun LoginScreen(navController: NavController) {
 
                     TextField(
                         value = passwordState.value,
-                        onValueChange = {passwordState.value = it},
+                        onValueChange = { passwordState.value = it },
                         leadingIcon = {
                             Image(
                                 painter = painterResource(id = R.drawable.password),
@@ -167,7 +191,6 @@ fun LoginScreen(navController: NavController) {
                         },
                         placeholder = { Text("Masukkan kata sandi") },
                         textStyle = androidx.compose.ui.text.TextStyle(fontSize = 14.sp),
-//                        visualTransformation = PasswordVisualTransformation(),
                         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         trailingIcon = {
@@ -227,21 +250,66 @@ fun LoginScreen(navController: NavController) {
 
                     Spacer(modifier = Modifier.height(14.dp))
 
+                    // Button masuk (login)
                     Button(
-//                        onClick = { navController.navigate("dashboard")},
-                        onClick = { navController.navigate("sementara")},
+                        onClick = {
+                            Log.d("LoginScreen", "Tombol login diklik dengan email: ${emailState.value}")
+                            // Gunakan coroutine scope di dalam onClick
+                            authViewModel.login(emailState.value, passwordState.value)
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp)
                             .padding(start = 20.dp, end = 20.dp, bottom = 10.dp),
                         shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E4178))
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E4178))
                     ) {
                         Text(
                             "MASUK",
                             color = Color.White,
                             fontSize = 14.sp,
                         )
+                    }
+
+                    // Mengamati loginState dan melakukan navigasi berdasarkan hasilnya
+                    when (state) {
+                        is LoginState.Loading -> {
+                            CircularProgressIndicator(color = Color(0xFF1E4178))
+                        }
+
+                        is LoginState.Success -> {
+                            val role = state.user.role
+                            Toast.makeText(
+                                context,
+                                "Login berhasil sebagai $role",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            when (role) {
+                                "superadmin" -> navController.navigate("dashboard/$role")
+                                "admin" -> navController.navigate("dashboard/$role")
+                                "manager" -> navController.navigate("dashboard/$role")
+                                else -> {
+                                    Toast.makeText(
+                                        context,
+                                        "Role tidak dikenali",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                            // Reset login state setelah sukses
+                            authViewModel.resetLoginState()
+                        }
+
+                        is LoginState.Error -> {
+                            // Tampilkan pesan error
+                            Toast.makeText(
+                                context,
+                                "Login gagal: ${state.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        else -> Unit
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package com.example.sipo_reka.ui.admin
 
+import android.app.Application
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -58,14 +59,34 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sipo_reka.model.Undangan
+import com.example.sipo_reka.ui.superadmin.ActionButtons
+import com.example.sipo_reka.ui.superadmin.TableCell
+import com.example.sipo_reka.ui.superadmin.formatTanggal
+import com.example.sipo_reka.viewModel.AuthViewModel
+import com.example.sipo_reka.viewModel.AuthViewModelFactory
+import com.example.sipo_reka.viewModel.SharedPrefHelper
+import com.example.sipo_reka.viewModel.UndanganViewModel
 
 @Composable
-fun UndanganAdmin(navController: NavController) {
+fun UndanganAdmin(navController: NavController, undanganViewModel: UndanganViewModel) {
+    val undanganList = undanganViewModel.undanganList.value
+
+    LaunchedEffect(Unit) {
+        undanganViewModel.fetchUndangan()
+    }
+
     Column(
         modifier = Modifier.fillMaxSize().background(Color.White).padding(16.dp)
     ) {
@@ -75,7 +96,7 @@ fun UndanganAdmin(navController: NavController) {
         Spacer(modifier = Modifier.height(10.dp))
         UndanganFiturAdmin()
         Spacer(modifier = Modifier.height(15.dp))
-        UndanganTableAdmin(navController)
+        UndanganTableAdmin(navController, undanganList)
     }
 }
 
@@ -137,7 +158,7 @@ fun UndanganSearchAdmin() {
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
                     singleLine = true,
-                    textStyle = androidx.compose.ui.text.TextStyle(
+                    textStyle = TextStyle(
                         fontSize = 14.sp,
                         color = Color.Black
                     ),
@@ -325,25 +346,9 @@ fun UndanganFiturAdmin() {
 }
 
 @Composable
-fun UndanganTableAdmin(navController: NavController) {
-    val tableData = (1..20).map { index ->
-        val status = when (index % 3) {
-            0 -> "Disetujui"
-            1 -> "Diproses"
-            else -> "Ditolak"
-        }
-        listOf(
-            index.toString(),
-            "Undangan Rapat Kajian $index",
-            "01-01-2024",
-            "S-00$index",
-            "5.5/REKA/GEN/QM & SHE (IT DAN K3)/III/2025",
-            "02-01-2024",
-            "QM & SHE-TI",
-            status,
-            "Hapus"
-        )
-    }
+fun UndanganTableAdmin(navController: NavController, undanganList: List<Undangan>) {
+    val sharedPrefHelper = SharedPrefHelper(LocalContext.current)
+    val userDivisiId = sharedPrefHelper.getDivisiId()
 
     val columnHeaders = listOf(
         "No", "Nama Dokumen", "Tanggal Undangan", "Seri", "Dokumen",
@@ -364,53 +369,67 @@ fun UndanganTableAdmin(navController: NavController) {
             // Header
             Row(Modifier.fillMaxWidth().background(Color.White)) {
                 columnHeaders.forEachIndexed { index, title ->
-                    UndanganTableCellAdmin(text = title, width = columnWidths[index], isHeader = true)
+                    TableCell(text = title, width = columnWidths[index], isHeader = true)
                 }
             }
 
             // Data Rows
-            tableData.forEach { rowData ->
-                val status = rowData[7]
+            undanganList.forEachIndexed { index, undangan ->
+                val status = undangan.status
+                val statusText = when (status) {
+                    "approve" -> "Disetujui"
+                    "pending" -> "Diproses"
+                    "reject" -> "Ditolak"
+                    else -> "Status Tidak Dikenal"
+                }
                 val statusColor = when (status) {
-                    "Disetujui" -> Color(0xFF00B087) // Soft green
-                    "Diproses" -> Color(0xFFDD9A19) // Soft yellow
-                    "Ditolak" -> Color(0xFFFF0000)  // Soft red
+                    "approve" -> Color(0xFF00B087)
+                    "pending" -> Color(0xFFDD9A19)
+                    "reject" -> Color(0xFFFF0000)
                     else -> Color.LightGray
                 }
 
+                val rowData = listOf(
+                    (index + 1).toString(),                                 // No
+                    undangan.judul,                                         // Nama Dokumen
+                    formatTanggal(undangan.tgl_dibuat),                     // format tanggal didefinisikan functionnya di UndanganSuperadmin
+                    undangan.seri_surat ?: "",                              // Seri
+                    undangan.nomor_undangan,                                // Dokumen
+                    formatTanggal(undangan.tgl_disahkan ?: ""),     // format tanggal didefinisikan functionnya di UndanganSuperadmin
+                    undangan.divisi?.nm_divisi ?: ""                        // Divisi
+                )
+
                 Row {
-                    rowData.forEachIndexed { index, value ->
-                        when {
-                            index == rowData.lastIndex -> {
-                                val showArchiveIcon = rowData[7] == "Disetujui"
-                                UndanganActionButtons(
-                                    width = columnWidths[index],
-                                    showArchiveIcon = showArchiveIcon,
-                                    navController = navController
-                                )
-                            }
-                            index == 7 -> {
-                                UndanganTableCellAdmin(
-                                    text = value,
-                                    width = columnWidths[index],
-                                    isHeader = false,
-                                    backgroundColor = statusColor,
-                                    textColor = Color.White
-                                )
-                            }
-                            else -> {
-                                val textColor = if (index == 1) statusColor else Color.Black
-                                UndanganTableCellAdmin(
-                                    text = value,
-                                    width = columnWidths[index],
-                                    isHeader = false,
-                                    isNoColumn = index == 0,
-                                    backgroundColor = Color.White,
-                                    textColor = textColor
-                                )
-                            }
-                        }
+                    rowData.forEachIndexed { columnIndex, value ->
+                        val textColor = if (columnIndex == 1) statusColor else Color.Black
+                        UndanganTableCellAdmin(
+                            text = value,
+                            width = columnWidths[columnIndex],
+                            isHeader = false,
+                            isNoColumn = columnIndex == 0,
+                            backgroundColor = Color.White,
+                            textColor = textColor
+                        )
                     }
+
+                    // Kolom Status (warna background)
+                    UndanganTableCellAdmin(
+                        text = statusText,
+                        width = columnWidths[7],
+                        isHeader = false,
+                        backgroundColor = statusColor,
+                        textColor = Color.White
+                    )
+
+                    // Kolom Aksi (tombol)
+                    UndanganAdminActionButtons(
+                        width = columnWidths[8],
+                        undanganId = undangan.id_undangan,
+                        navController = navController,
+                        userDivisiId = userDivisiId,
+                        undanganDivisiId = undangan.divisi?.id_divisi,
+                        status = undangan.status
+                    )
                 }
             }
         }
@@ -475,36 +494,56 @@ fun UndanganTableCellAdmin(
 }
 
 @Composable
-fun UndanganActionButtons(width: Dp, showArchiveIcon: Boolean, navController: NavController) {
-    val context = LocalContext.current
+fun UndanganAdminActionButtons(
+    width: Dp,
+    undanganId: Int,
+    navController: NavController,
+    userDivisiId: Int,
+    undanganDivisiId: Int?,
+    status: String
+) {
     Box(
         modifier = Modifier.width(width).wrapContentHeight().fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = {navController.navigate("kirimUndanganAdmin")
-            }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ikon_share),
-                    contentDescription = "Kirim",
-                    tint = Color(0xFF5D5FEF),
-                    modifier = Modifier.size(15.dp)
-                )
-            }
-            if (showArchiveIcon) {
+            // tombol kirim
+            if (
+                undanganDivisiId != null &&
+                undanganDivisiId == userDivisiId &&
+                (status == "pending" || status == "approve")
+            ) {
                 IconButton(onClick = {
+                    navController.navigate("kirimUndanganAdmin")
                 }) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ikon_arsip),
+                        imageVector = Icons.Default.Send,
+                        contentDescription = "Kirim",
+                        tint = Color(0xFF5D5FEF),
+                        modifier = Modifier.size(15.dp)
+                    )
+                }
+            }
+            // tombol arsip
+            if (
+                (undanganDivisiId == userDivisiId && (status == "approve" || status == "reject")) ||
+                (undanganDivisiId != userDivisiId && status == "approve")
+            ) {
+                IconButton(onClick = {
+                    // Logika arsip di sini
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Archive,
                         contentDescription = "Arsip",
                         tint = Color(0xFF0095FF),
                         modifier = Modifier.size(16.dp)
                     )
                 }
             }
-            IconButton(onClick = {navController.navigate("detailUndanganAdmin")}) {
+            // tombol view
+            IconButton(onClick = {navController.navigate("detailUndanganAdmin/$undanganId")}) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ikon_view),
+                    imageVector = Icons.Default.Visibility,
                     contentDescription = "View",
                     tint = Color(0xFF0095FF),
                     modifier = Modifier.size(15.dp)
