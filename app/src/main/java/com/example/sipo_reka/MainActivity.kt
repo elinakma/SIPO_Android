@@ -45,6 +45,13 @@ import com.example.sipo_reka.ui.arsip.Arsip
 import com.example.sipo_reka.ui.arsip.MemoArsip
 import com.example.sipo_reka.ui.arsip.RisalahArsip
 import com.example.sipo_reka.ui.arsip.UndanganArsip
+import com.example.sipo_reka.ui.laporan.Laporan
+import com.example.sipo_reka.ui.laporan.MemoLaporan
+import com.example.sipo_reka.ui.laporan.RisalahLaporan
+import com.example.sipo_reka.ui.laporan.TableMemoLaporan
+import com.example.sipo_reka.ui.laporan.TableRisalahLaporan
+import com.example.sipo_reka.ui.laporan.TableUndanganLaporan
+import com.example.sipo_reka.ui.laporan.UndanganLaporan
 import com.example.sipo_reka.ui.manager.DashboardManager
 import com.example.sipo_reka.ui.manager.DashboardsManager
 import com.example.sipo_reka.ui.manager.MemoDiterima
@@ -167,6 +174,14 @@ fun AppNavigator(navController: NavHostController, context: Context, undanganVie
         composable("memo_screen") { MemoSuperadmin(navController) }
         composable("user_management_screen") { UserManage(navController) }
         composable("risalah_screen") { RisalahSuperadmin(navController) }
+        // Laporan
+        composable("laporan_screen") { Laporan(navController) }
+        composable("memoLaporan") { MemoLaporan(navController) }
+        composable("undanganLaporan") { UndanganLaporan(navController) }
+        composable("risalahLaporan") { RisalahLaporan(navController) }
+        composable("tableMemoLaporan") { TableMemoLaporan(navController) }
+        composable("tableUndanganLaporan") { TableUndanganLaporan(navController) }
+        composable("tableRisalahLaporan") { TableRisalahLaporan(navController) }
 
         // Arsip
         composable("arsip_screen") { Arsip(navController) }
